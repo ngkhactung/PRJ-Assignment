@@ -64,7 +64,7 @@
                             <c:forEach items="${requestScope.sessionList}" var="session">
                                 <c:if test="${session.slot.id == slot.id && session.date == day}">
                                     <c:if test="${session.isTaken}">
-                                        <a href="attendance_view?sessId=${session.id}">
+                                        <a href="attendance_review?sessId=${session.id}">
                                             ${session.group.name} - ${session.group.course.code} <br>
                                             at ${session.room.building.id}-${session.room.name} <br>
                                         </a>

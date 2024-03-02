@@ -12,6 +12,10 @@
         <servlet-name>AttendanceTakingController</servlet-name>
         <servlet-class>controller.instructor.AttendanceTakingController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AttendanceReviewController</servlet-name>
+        <servlet-class>controller.instructor.AttendanceReviewController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TimeTableInstructorController</servlet-name>
         <url-pattern>/instructor/timetable</url-pattern>
@@ -23,5 +27,9 @@
     <servlet-mapping>
         <servlet-name>AttendanceTakingController</servlet-name>
         <url-pattern>/instructor/attendance_taking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AttendanceReviewController</servlet-name>
+        <url-pattern>/instructor/attendance_review</url-pattern>
     </servlet-mapping>
 </web-app>
