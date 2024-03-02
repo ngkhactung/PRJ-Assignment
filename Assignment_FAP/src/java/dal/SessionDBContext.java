@@ -97,22 +97,22 @@ public class SessionDBContext extends DBContext {
             stm.setDate(2, from);
             stm.setDate(3, to);
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Session session = new Session();
-                
+
                 Slot slot = new Slot();
                 slot.setId(rs.getInt("Slot"));
                 slot.setStart(rs.getString("Start"));
                 slot.setEnd(rs.getString("End"));
                 session.setSlot(slot);
-                
+
                 Room room = new Room();
                 room.setName(rs.getInt("Room"));
                 Building building = new Building();
                 building.setId(rs.getString("Building"));
                 room.setBuilding(building);
                 session.setRoom(room);
-                
+
                 session.setDate(rs.getDate("Date"));
 
                 Group group = new Group();
@@ -120,12 +120,58 @@ public class SessionDBContext extends DBContext {
                 course.setCode(rs.getString("Course"));
                 group.setCourse(course);
                 session.setGroup(group);
-                
+
                 sessionList.add(session);
             }
         } catch (SQLException ex) {
             Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return sessionList;
+    }
+
+    public Session getSession(int sessionID) {
+        Session session = new Session();
+        try {
+            String sql = "select s.ID, slot.ID as Slot, [Start], [End], r.Name as Room, r.BuildingID As Building, \n"
+                    + "Date, g.Name as [Group], c.Code as [Course], c.Name as CourseName\n"
+                    + "from [Session] s inner join Slot slot on s.SloID = slot.ID\n"
+                    + "				inner join Room r on s.RoomID = r.ID\n"
+                    + "				inner join Building build on r.BuildingID = build.ID\n"
+                    + "				inner join Groups g on s.GroupID = g.ID\n"
+                    + "				inner join Course c on g.CourseID = c.ID	\n"
+                    + "where s.ID = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, sessionID);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                session.setId(rs.getInt("ID"));
+                
+                Slot slot = new Slot();
+                slot.setId(rs.getInt("Slot"));
+                slot.setStart(rs.getString("Start"));
+                slot.setEnd(rs.getString("End"));
+                session.setSlot(slot);
+
+                Room room = new Room();
+                room.setName(rs.getInt("Room"));
+                Building building = new Building();
+                building.setId(rs.getString("Building"));
+                room.setBuilding(building);
+                session.setRoom(room);
+
+                session.setDate(rs.getDate("Date"));
+
+                Group group = new Group();
+                group.setName(rs.getString("Group"));
+                Course course = new Course();
+                course.setCode(rs.getString("Course"));
+                course.setName(rs.getString("CourseName"));
+                group.setCourse(course);
+                session.setGroup(group);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return session;
     }
 }

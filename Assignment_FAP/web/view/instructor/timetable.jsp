@@ -41,7 +41,7 @@
                         </select>
                     </form>
                 </td>
-                
+
                 <c:forEach items="${requestScope.daysOfWeek}" var="day">
                     <td>
                         <fmt:formatDate pattern="E" value="${day}"/>
@@ -63,12 +63,18 @@
                         <td>
                             <c:forEach items="${requestScope.sessionList}" var="session">
                                 <c:if test="${session.slot.id == slot.id && session.date == day}">
-                                    ${session.group.name} - ${session.group.course.code} <br>
-                                    at ${session.room.building.id}-${session.room.name} <br>
                                     <c:if test="${session.isTaken}">
+                                        <a href="attendance_view?sessId=${session.id}">
+                                            ${session.group.name} - ${session.group.course.code} <br>
+                                            at ${session.room.building.id}-${session.room.name} <br>
+                                        </a>
                                         (Taken)
                                     </c:if>
                                     <c:if test="${!session.isTaken}">
+                                        <a href="attendance_taking?sessId=${session.id}">
+                                            ${session.group.name} - ${session.group.course.code} <br>
+                                            at ${session.room.building.id}-${session.room.name} <br>
+                                        </a>
                                         (Not yet)
                                     </c:if> <br>
                                     ${session.slot.start} - ${session.slot.end}

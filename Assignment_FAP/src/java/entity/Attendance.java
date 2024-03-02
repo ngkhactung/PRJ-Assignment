@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package entity;
-import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
  *
@@ -15,7 +15,7 @@ public class Attendance {
     private Session session;
     private Boolean status;
     private String note;
-    private Time recordTime;
+    private Timestamp recordTime;
 
     public Attendance() {
     }
@@ -60,13 +60,11 @@ public class Attendance {
         this.note = note;
     }
 
-    public Time getRecordTime() {
+    public Timestamp getRecordTime() {
         return recordTime;
     }
 
-    public void setRecordTime(Time recordTime) {
+    public void setRecordTime(Timestamp recordTime) {
         this.recordTime = recordTime;
     }
-    
-    
 }
