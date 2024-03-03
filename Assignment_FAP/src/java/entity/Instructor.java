@@ -10,8 +10,10 @@ package entity;
  */
 public class Instructor {
     private int id;
+    private String code;
     private String name;
     private Boolean gender;
+    private String phone;
     private String email;
     private String image;
 
@@ -24,6 +26,14 @@ public class Instructor {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -42,6 +52,14 @@ public class Instructor {
         this.gender = gender;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -57,6 +75,5 @@ public class Instructor {
     public void setImage(String image) {
         this.image = image;
     }
-    
-    
+
 }

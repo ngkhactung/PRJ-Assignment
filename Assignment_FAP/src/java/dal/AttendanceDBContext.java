@@ -22,18 +22,16 @@ import java.util.logging.Logger;
  */
 public class AttendanceDBContext extends DBContext {
 
+    //Get attendance for display in time table of student
     public ArrayList<Attendance> getAttendanceByWeek(String studentID, Date from, Date to) {
         ArrayList<Attendance> attList = new ArrayList<>();
         try {
-            String sql = "select slot.ID as Slot, [Start], [End], Date, a.Status \n"
-                    + "from Student student inner join EnrollMent e on student.ID = e.StudentID\n"
-                    + "				inner join Groups g on e.GroupID = g.ID\n"
-                    + "				inner join [Session] s on g.ID = s.GroupID\n"
-                    + "				inner join Slot slot on s.SloID = slot.ID\n"
-                    + "				inner join Room r on s.RoomID = r.ID\n"
-                    + "				inner join Building build on r.BuildingID = build.ID\n"
-                    + "				left join Attendance a on s.ID = a.SessionID\n"
-                    + "where student.ID = ? AND [Date] >= ? AND [Date] <= ?";
+            String sql = "select slot.ID as Slot, [Start], [End], Date, a.Status\n"
+                    + "from Student stu inner join EnrollMent e on stu.ID = e.StudentID\n"
+                    + "                 inner join [Session] s on e.GroupID = s.GroupID\n"
+                    + "                 inner join Slot slot on s.SloID = slot.ID\n"
+                    + "                 left join Attendance a on stu.ID = a.StudentID and s.ID = a.SessionID\n"
+                    + "where stu.ID = ? AND [Date] >= ? AND [Date] <= ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, studentID);
             stm.setDate(2, from);
@@ -63,6 +61,7 @@ public class AttendanceDBContext extends DBContext {
         return attList;
     }
 
+    //Get attendance for display to take attendance by instructor
     public ArrayList<Attendance> getAttendanceBySession(int sessionID) {
         ArrayList<Attendance> attList = new ArrayList<>();
         try {
@@ -95,11 +94,75 @@ public class AttendanceDBContext extends DBContext {
         return attList;
     }
 
+    //Get attendance for display in session detail
+    public Attendance getAttedanceByStudent(int sessionID, String studentID) {
+        Attendance att = new Attendance();
+        try {
+            String sql = "select a.Status, a.RecordTime\n"
+                    + "from [Session] s inner join EnrollMent e on s.GroupID = e.GroupID\n"
+                    + "                 inner join Student stu on e.StudentID = stu.ID\n"
+                    + "                 left join Attendance a on stu.ID = a.StudentID and s.ID = a.SessionID\n"
+                    + "where s.ID = ? and stu.ID = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, sessionID);
+            stm.setString(2, studentID);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                if (rs.getObject("Status") != null) {
+                    att.setStatus(rs.getBoolean("Status"));
+                }
+
+                if (rs.getObject("RecordTime") != null) {
+                    att.setRecordTime(rs.getTimestamp("RecordTime"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return att;
+    }
+
+    //Get attendance for display to student by course
+    public ArrayList<Attendance> getAttedanceByCourse(String studentID, int courseID) {
+        ArrayList<Attendance> attList = new ArrayList<>();
+        try {
+            String sql = "select s.ID, a.Status, a.Note\n"
+                    + "from Student stu inner join EnrollMent e on stu.ID = e.StudentID\n"
+                    + "                 inner join Groups g on e.GroupID = g.ID\n"
+                    + "                 inner join Course c on g.CourseID = c.ID\n"
+                    + "                 inner join [Session] s on g.ID = s.GroupID \n"
+                    + "                 left join Attendance a on stu.ID = a.StudentID and s.ID = a.SessionID\n"
+                    + "where stu.ID = ? and g.CourseID = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, studentID);
+            stm.setInt(2, courseID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Attendance att = new Attendance();
+
+                Session session = new Session();
+                session.setId(rs.getInt("ID"));
+                att.setSession(session);
+
+                if (rs.getObject("Status") != null) {
+                    att.setStatus(rs.getBoolean("Status"));
+                }
+
+                att.setNote(rs.getString("Note"));
+
+                attList.add(att);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendanceDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return attList;
+    }
+
     public void setAttendancesIntoTable(int sessionID, ArrayList<Attendance> attList) {
         try {
             connection.setAutoCommit(false);
             String sql_delete_atts = "Delete from Attendance\n"
-                                      + "where SessionID = ?";
+                    + "where SessionID = ?";
             PreparedStatement delete = connection.prepareStatement(sql_delete_atts);
             delete.setInt(1, sessionID);
             delete.executeUpdate();

@@ -63,19 +63,19 @@
                         <td>
                             <c:forEach items="${requestScope.sessionList}" var="session">
                                 <c:if test="${session.slot.id == slot.id && session.date == day}">
-                                    ${session.group.course.code} <br>
+                                    <a href="session_detail?sessId=${session.id}">${session.group.course.code}</a>
                                     at ${session.room.building.id}-${session.room.name} <br>
                                     <c:forEach items="${requestScope.attList}" var="att">
                                         <c:if test="${att.session.slot.id == slot.id 
                                                       && att.session.date == day}">
                                             <c:if test="${att.status == null}">
-                                                (Not yet)
+                                                <p style="color: red">(Not Yet)</p>
                                             </c:if>
                                             <c:if test="${att.status == true}">
-                                                Attendanced
+                                                <p style="color: green">(Attended)</p>
                                             </c:if>
                                             <c:if test="${att.status == false}">
-                                                Absent
+                                                <p style="color: red">(Absent)</p>
                                             </c:if>
                                         </c:if>
                                     </c:forEach> <br>
@@ -87,5 +87,8 @@
                 </tr>
             </c:forEach>
         </table>
+        
+        <input type="button" value="View Attendance" 
+               onclick="window.location.href = 'attendance_view'" />
     </body>
 </html>

@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -14,18 +15,20 @@
     </head>
     <body>
         <div>
-            <p>Class: ${requestScope.session.group.name}</p>
-            <p>Course: ${requestScope.session.group.course.code} 
-                - ${requestScope.session.group.course.name}</p>
+            <p>Student group: ${requestScope.session.group.name}</p>
+            <p>Course: ${requestScope.session.group.course.name}
+                (${requestScope.session.group.course.code})</p>
             <p>Room: ${requestScope.session.room.building.id} 
                 - ${requestScope.session.room.name}</p>
             <p>Slot: ${requestScope.session.slot.id}</p>
-            <p>Date: ${requestScope.session.date}</p>
+            <p>Date: <fmt:formatDate pattern="dd/MM/yyyy" 
+                     value="${requestScope.session.date}"/></p>
         </div>
         <form action="attendance_taking" method="POST">
             <input type="hidden" name="sessionID" value="${requestScope.session.id}">
             <table border="1px">
                 <tr>
+                    <th>Index</th>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Image</th>
@@ -33,8 +36,9 @@
                     <th>Note</th>
                     <th>Record Time</th>
                 </tr>
-                <c:forEach items="${requestScope.attList}" var="att">
+                <c:forEach items="${requestScope.attList}" var="att" varStatus="loop">
                     <tr>
+                        <td>${loop.count}</td>
                         <td>${att.student.id}</td>
                         <td>${att.student.name}</td>
                         <td>
@@ -55,7 +59,10 @@
                         <td>
                             <input type="text" name="note${att.student.id}" value="${att.note}">
                         </td>
-                        <td>${att.recordTime}</td>
+                        <td>
+                            <fmt:formatDate pattern="dd/MM/yyyy hh:mm:ss" 
+                                        value="${att.recordTime}"/>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

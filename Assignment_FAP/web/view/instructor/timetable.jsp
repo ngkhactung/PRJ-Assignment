@@ -68,14 +68,14 @@
                                             ${session.group.name} - ${session.group.course.code} <br>
                                             at ${session.room.building.id}-${session.room.name} <br>
                                         </a>
-                                        (Taken)
+                                        <p style="color: green">(Taken)</p>
                                     </c:if>
                                     <c:if test="${!session.isTaken}">
                                         <a href="attendance_taking?sessId=${session.id}">
                                             ${session.group.name} - ${session.group.course.code} <br>
                                             at ${session.room.building.id}-${session.room.name} <br>
                                         </a>
-                                        (Not yet)
+                                        <p style="color: red">(Not yet)</p>
                                     </c:if> <br>
                                     ${session.slot.start} - ${session.slot.end}
                                 </c:if>
