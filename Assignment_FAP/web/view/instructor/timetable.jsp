@@ -85,5 +85,7 @@
                 </tr>
             </c:forEach>
         </table>
+        
+        <button onclick="window.location.href = 'grade_taking'">Take Grade</button>
     </body>
 </html>

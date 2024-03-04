@@ -24,6 +24,10 @@
         <servlet-name>AttendanceViewController</servlet-name>
         <servlet-class>controller.student.AttendanceViewController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GradeTakingController</servlet-name>
+        <servlet-class>controller.instructor.GradeTakingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TimeTableInstructorController</servlet-name>
         <url-pattern>/instructor/timetable</url-pattern>
@@ -47,5 +51,9 @@
     <servlet-mapping>
         <servlet-name>AttendanceViewController</servlet-name>
         <url-pattern>/student/attendance_view</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GradeTakingController</servlet-name>
+        <url-pattern>/instructor/grade_taking</url-pattern>
     </servlet-mapping>
 </web-app>

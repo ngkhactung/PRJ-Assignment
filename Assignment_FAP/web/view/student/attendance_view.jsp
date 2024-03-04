@@ -17,8 +17,13 @@
         <div>
             <c:forEach items="${requestScope.groupList}" var="group">
                 <p>
-                    <a href="attendance_view?courseID=${group.course.id}">
-                        ${group.course.name} (${group.course.code} - ${group.name})</a>
+                    <c:if test="${requestScope.courseID == group.course.id}">
+                        <b>${group.course.name} (${group.course.code} - ${group.name})</b>
+                    </c:if>
+                    <c:if test="${requestScope.courseID != group.course.id}">
+                        <a href="attendance_view?courseID=${group.course.id}">
+                            ${group.course.name} (${group.course.code} - ${group.name})</a>
+                    </c:if>
                 </p>
             </c:forEach>
         </div>

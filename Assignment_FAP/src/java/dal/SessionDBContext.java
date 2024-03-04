@@ -204,7 +204,7 @@ public class SessionDBContext extends DBContext {
                 Session session = new Session();
 
                 session.setId(rs.getInt("ID"));
-                
+
                 Slot slot = new Slot();
                 slot.setId(rs.getInt("Slot"));
                 slot.setStart(rs.getString("Start"));
@@ -227,7 +227,7 @@ public class SessionDBContext extends DBContext {
                 Group group = new Group();
                 group.setName(rs.getString("Group"));
                 session.setGroup(group);
-                
+
                 sessionList.add(session);
             }
         } catch (SQLException ex) {

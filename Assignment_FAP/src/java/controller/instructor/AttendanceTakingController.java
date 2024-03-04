@@ -69,7 +69,7 @@ public class AttendanceTakingController extends HttpServlet {
             attendance.setRecordTime(Timestamp.valueOf(LocalDateTime.now()));
         }
         attDB.setAttendancesIntoTable(sessionID, attList);
-        response.sendRedirect("timetable");
+        response.sendRedirect("attendance_review?sessId=" + sessionID);
     }
 
     /**

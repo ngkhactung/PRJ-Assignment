@@ -47,6 +47,7 @@ public class AttendanceViewController extends HttpServlet {
         AttendanceDBContext attDB = new AttendanceDBContext();
         ArrayList<Attendance> attList = attDB.getAttedanceByCourse("HE170386", courseID);
         
+        request.setAttribute("courseID", courseID);
         request.setAttribute("groupList", groupList);
         request.setAttribute("sessList", sessionList);
         request.setAttribute("attList", attList);
