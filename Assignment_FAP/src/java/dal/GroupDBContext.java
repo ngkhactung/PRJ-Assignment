@@ -49,7 +49,7 @@ public class GroupDBContext extends DBContext {
 
     //Get information of the group and list of students of that group through the given group id
     public Group getGroupByGroup(int groupID) {
-            Group group = new Group();
+        Group group = new Group();
         try {
             String sql = "select g.ID, stu.ID as StudentID, stu.Name\n"
                     + "from Groups g inner join EnrollMent e on g.ID = e.GroupID\n"
@@ -58,12 +58,12 @@ public class GroupDBContext extends DBContext {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, groupID);
             ResultSet rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Student student = new Student();
 
                 student.setId(rs.getString("StudentID"));
                 student.setName(rs.getString("Name"));
-                
+
                 group.getStudents().add(student);
             }
         } catch (SQLException ex) {
@@ -127,6 +127,27 @@ public class GroupDBContext extends DBContext {
                 course.setName(rs.getString("CourseName"));
                 group.setCourse(course);
 
+                groupList.add(group);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GroupDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return groupList;
+    }
+
+    //Get list of group's name 
+    public ArrayList<Group> getListGroupnName() {
+        ArrayList<Group> groupList = new ArrayList<>();
+        try {
+            String sql = "Select DISTINCT g.Name\n"
+                    + "from Groups g";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                Group group = new Group();
+                
+                group.setName(rs.getString("Name"));
+                
                 groupList.add(group);
             }
         } catch (SQLException ex) {

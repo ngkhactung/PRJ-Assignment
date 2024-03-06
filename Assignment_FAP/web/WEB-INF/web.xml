@@ -32,6 +32,14 @@
         <servlet-name>GradeViewController</servlet-name>
         <servlet-class>controller.student.GradeViewController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchStudentController</servlet-name>
+        <servlet-class>controller.instructor.SearchStudentController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentProfileController</servlet-name>
+        <servlet-class>controller.student.StudentProfileController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TimeTableInstructorController</servlet-name>
         <url-pattern>/instructor/timetable</url-pattern>
@@ -63,5 +71,13 @@
     <servlet-mapping>
         <servlet-name>GradeViewController</servlet-name>
         <url-pattern>/student/grade_view</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchStudentController</servlet-name>
+        <url-pattern>/instructor/search_student</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentProfileController</servlet-name>
+        <url-pattern>/student/student_profile</url-pattern>
     </servlet-mapping>
 </web-app>

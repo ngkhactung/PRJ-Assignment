@@ -87,5 +87,6 @@
         </table>
         
         <button onclick="window.location.href = 'grade_taking'">Take Grade</button>
+        <button onclick="window.location.href = 'search_student'">Search Student</button>
     </body>
 </html>

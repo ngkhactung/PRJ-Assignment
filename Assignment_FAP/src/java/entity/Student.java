@@ -15,7 +15,9 @@ public class Student {
     private String name;
     private Boolean gender;
     private Date dob;
+    private String phone;
     private String email;
+    private String address;
     private String image;
     private ArrayList<Group> groups = new ArrayList<>();
 
@@ -70,6 +72,22 @@ public class Student {
         this.image = image;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    
     public ArrayList<Group> getGroups() {
         return groups;
     }
