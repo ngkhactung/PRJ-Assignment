@@ -90,5 +90,7 @@
         
         <input type="button" value="View Attendance" 
                onclick="window.location.href = 'attendance_view'" />
+        <input type="button" value="View Grade" 
+               onclick="window.location.href = 'grade_view'" />
     </body>
 </html>

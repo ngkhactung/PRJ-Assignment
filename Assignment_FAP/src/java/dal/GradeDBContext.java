@@ -21,6 +21,8 @@ import java.sql.Types;
  */
 public class GradeDBContext extends DBContext {
 
+    //Get all grades except the final exam, final re-exam and practice test 
+    //of students belonging to the group with the given group id.
     public ArrayList<Grade> getGradeByGroup(int groupID) {
         ArrayList<Grade> gradeList = new ArrayList<>();
         try {
@@ -60,12 +62,55 @@ public class GradeDBContext extends DBContext {
         return gradeList;
     }
 
+    //Get all grades of student of a course by the given course id and student id
+    public ArrayList<Grade> getGradeByCourse(String studentID, int courseID) {
+        ArrayList<Grade> gradeList = new ArrayList<>();
+        try {
+            String sql = "select a.ID as AssessmentID, stu.ID as StudentID, grade.Value, grade.Comment\n"
+                    + "from Groups g inner join Course c on g.CourseID = c.ID\n"
+                    + "              inner join Assessment a on c.ID = a.CourseID\n"
+                    + "              inner join EnrollMent e on g.ID = e.GroupID\n"
+                    + "              inner join Student stu on e.StudentID = stu.ID\n"
+                    + "              left join Grade grade on a.ID = grade.AssessID and stu.ID = grade.StudentID\n"
+                    + "where stu.ID = ? and g.CourseID = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, studentID);
+            stm.setInt(2, courseID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Grade grade = new Grade();
+
+                Assessment assessment = new Assessment();
+                assessment.setId(rs.getInt("AssessmentID"));
+                grade.setAssessment(assessment);
+
+                Student student = new Student();
+                student.setId(rs.getString("StudentID"));
+                grade.setStudent(student);
+
+                if (rs.getObject("Value") != null) {
+                    grade.setValue(rs.getFloat("Value"));
+                }
+
+                grade.setComment(rs.getString("Comment"));
+
+                gradeList.add(grade);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return gradeList;
+    }
+
+    //Delete all grades except the final exam, final re-exam and practice test of 
+    //students belonging to the group with the given group id, 
+    //then re-insert the new grades of those students
     public void setGradeIntoTable(int groupID, ArrayList<Grade> gradeList) {
         try {
             connection.setAutoCommit(false);
             String sql_delete_grade = "Delete from Grade\n"
                     + "where ID in ( select grade.ID\n"
-                    + "		 from Groups g inner join Course c on g.CourseID = c.ID\n"
+                    + "		    from Groups g inner join Course c on g.CourseID = c.ID\n"
                     + "                            inner join Assessment a on c.ID = a.CourseID\n"
                     + "                            inner join EnrollMent e on g.ID = e.GroupID\n"
                     + "                            inner join Student stu on e.StudentID = stu.ID\n"
@@ -85,7 +130,7 @@ public class GradeDBContext extends DBContext {
                 insert.setString(2, grade.getStudent().getId());
                 if (grade.getValue() != null) {
                     insert.setFloat(3, grade.getValue());
-                }else{
+                } else {
                     insert.setNull(3, Types.FLOAT);
                 }
                 insert.executeUpdate();

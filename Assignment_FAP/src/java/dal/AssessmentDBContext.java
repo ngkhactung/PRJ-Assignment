@@ -18,6 +18,8 @@ import java.util.logging.Logger;
  */
 public class AssessmentDBContext extends DBContext {
 
+    //Get all assessments except final exam, final reset exam and practical exam 
+    //of a course belonging to the group given id
     public ArrayList<Assessment> getAssessmentByGroup(int groupID) {
         ArrayList<Assessment> assessList = new ArrayList<>();
         try {
@@ -28,6 +30,33 @@ public class AssessmentDBContext extends DBContext {
                     + "and a.Type <> 'Final Exam Resit' and a.Type <> 'Practical Exam'";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, groupID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Assessment assessment = new Assessment();
+
+                assessment.setId(rs.getInt("AssessmentID"));
+                assessment.setType(rs.getString("Type"));
+                assessment.setName(rs.getString("Name"));
+                assessment.setWeight(rs.getFloat("Weight"));
+
+                assessList.add(assessment);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AssessmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return assessList;
+    }
+
+    //Get all assessments of a course by given a course id
+    public ArrayList<Assessment> getAssessmentByCourse(int courseID) {
+        ArrayList<Assessment> assessList = new ArrayList<>();
+        try {
+            String sql = "select g.CourseID, a.ID as AssessmentID, a.Type, a.Name, a.Weight\n"
+                    + "from Groups g inner join Course c on g.CourseID = c.ID\n"
+                    + "              inner join Assessment a on c.ID = a.CourseID\n"
+                    + "where g.CourseID = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, courseID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Assessment assessment = new Assessment();

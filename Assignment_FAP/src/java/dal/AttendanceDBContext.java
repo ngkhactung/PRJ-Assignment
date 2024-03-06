@@ -158,6 +158,7 @@ public class AttendanceDBContext extends DBContext {
         return attList;
     }
 
+    //Delete all attendance records of a session, then re-insert the attendance records of that session
     public void setAttendancesIntoTable(int sessionID, ArrayList<Attendance> attList) {
         try {
             connection.setAutoCommit(false);

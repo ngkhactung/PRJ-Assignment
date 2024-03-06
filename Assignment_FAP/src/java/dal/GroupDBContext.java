@@ -20,6 +20,7 @@ import java.util.logging.Logger;
  */
 public class GroupDBContext extends DBContext {
 
+    //Get information of the group and list of students of that group through the given session id
     public Group getGroupBySession(int sessionID) {
         Group group = new Group();
         try {
@@ -46,6 +47,7 @@ public class GroupDBContext extends DBContext {
         return group;
     }
 
+    //Get information of the group and list of students of that group through the given group id
     public Group getGroupByGroup(int groupID) {
             Group group = new Group();
         try {
@@ -70,6 +72,7 @@ public class GroupDBContext extends DBContext {
         return group;
     }
 
+    //Get the list of groups of a student through the given student id
     public ArrayList<Group> getGroupsByStudent(String studentID) {
         ArrayList<Group> groupList = new ArrayList<>();
         try {
@@ -101,6 +104,7 @@ public class GroupDBContext extends DBContext {
         return groupList;
     }
 
+    //Get the list of groups of an instructor through the given instructor id
     public ArrayList<Group> getGroupsByInstructor(int instructorID) {
         ArrayList<Group> groupList = new ArrayList<>();
         try {

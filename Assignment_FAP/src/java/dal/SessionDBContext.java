@@ -26,6 +26,7 @@ import java.util.logging.Logger;
  */
 public class SessionDBContext extends DBContext {
 
+    //Get the instructor's weekly sessions to display on the timetable
     public ArrayList<Session> getTimeTableOfInstructor(int instructorID, Date from, Date to) {
         ArrayList<Session> sessionList = new ArrayList<>();
         try {
@@ -79,6 +80,7 @@ public class SessionDBContext extends DBContext {
         return sessionList;
     }
 
+    //Get students' weekly sessions to display on the timetable
     public ArrayList<Session> getTimeTableOfStudent(String studentID, Date from, Date to) {
         ArrayList<Session> sessionList = new ArrayList<>();
         try {
@@ -131,6 +133,7 @@ public class SessionDBContext extends DBContext {
         return sessionList;
     }
 
+    //Get all information of a session through the given session id
     public Session getSession(int sessionID) {
         Session session = new Session();
         try {
@@ -182,6 +185,7 @@ public class SessionDBContext extends DBContext {
         return session;
     }
 
+    //Get session information of a student in a course to display in the student's attendance view
     public ArrayList<Session> getSessionsForAttendance(String studentID, int courseID) {
         ArrayList<Session> sessionList = new ArrayList<>();
         try {

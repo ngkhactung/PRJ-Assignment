@@ -51,7 +51,7 @@
         <p>Member List of Group</p>
         <table border="1px">
             <tr>
-                <th>No</th>
+                <th>Index</th>
                 <th>Image</th>
                 <th>Member</th>
                 <th>Full Name</th>
