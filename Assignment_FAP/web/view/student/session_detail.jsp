@@ -19,7 +19,10 @@
                      value="${requestScope.session.date}"/></p>
             <p>Slot: ${requestScope.session.slot.id}</p>
             <p>Student group: ${requestScope.session.group.name}</p>
-            <p>Instructor: ${requestScope.session.instructor.code}</p>
+            <p>Instructor: 
+                <a href="../instructor/profile?instrucID=${requestScope.session.instructor.id}">
+                    ${requestScope.session.instructor.code}</a>
+            </p>
             <p>Course: ${requestScope.session.group.course.name}
                 (${requestScope.session.group.course.code})</p>
             <p>Room: ${requestScope.session.room.building.id} 

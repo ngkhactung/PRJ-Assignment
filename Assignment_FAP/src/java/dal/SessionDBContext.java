@@ -137,14 +137,16 @@ public class SessionDBContext extends DBContext {
     public Session getSession(int sessionID) {
         Session session = new Session();
         try {
-            String sql = "select s.ID, slot.ID as Slot, [Start], [End], r.Name as Room, r.BuildingID As Building, \n"
-                    + "Date, g.Name as [Group], c.Code as [Course], c.Name as CourseName, Ins.Code as Instructor\n"
+            String sql = "select s.ID, slot.ID as Slot, [Start], [End], "
+                    + "r.Name as Room, r.BuildingID As Building, Date, \n"
+                    + "g.Name as [Group], c.Code as [Course], c.Name as CourseName, "
+                    + "Ins.ID as InstructorID , Ins.Code as Instructor\n"
                     + "from [Session] s inner join Slot slot on s.SloID = slot.ID\n"
-                    + "				inner join Room r on s.RoomID = r.ID\n"
-                    + "				inner join Building build on r.BuildingID = build.ID\n"
-                    + "				inner join Groups g on s.GroupID = g.ID\n"
-                    + "				inner join Course c on g.CourseID = c.ID	\n"
-                    + "                         inner join Instructor Ins on s.InstructorID = Ins.ID \n"
+                    + "                 inner join Room r on s.RoomID = r.ID\n"
+                    + "                 inner join Building build on r.BuildingID = build.ID\n"
+                    + "                 inner join Groups g on s.GroupID = g.ID\n"
+                    + "                 inner join Course c on g.CourseID = c.ID\n"
+                    + "                 inner join Instructor Ins on s.InstructorID = Ins.ID \n"
                     + "where s.ID = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, sessionID);
@@ -168,6 +170,7 @@ public class SessionDBContext extends DBContext {
                 session.setDate(rs.getDate("Date"));
 
                 Instructor instructor = new Instructor();
+                instructor.setId(rs.getInt("InstructorID"));
                 instructor.setCode(rs.getString("Instructor"));
                 session.setInstructor(instructor);
 

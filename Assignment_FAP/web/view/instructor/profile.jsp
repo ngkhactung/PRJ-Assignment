@@ -1,6 +1,6 @@
 <%-- 
-    Document   : profile
-    Created on : Mar 7, 2024, 2:31:42 AM
+    Document   : instructor_profile.jsp
+    Created on : Mar 7, 2024, 4:01:53 AM
     Author     : Admin
 --%>
 
@@ -13,42 +13,39 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <img src="${requestScope.student.image}" style="height:146px;width:111px"/>
         <table border="1px">
             <tr>
-                <th>Roll number</th>
-                <td>${requestScope.student.id}</td>
+                <th>Code</th>
+                <td>${requestScope.instructor.code}</td>
             </tr>
             <tr>
                 <th>Full Name</th>
-                <td>${requestScope.student.name}</td>
+                <td>${requestScope.instructor.name}</td>
             </tr>
             <tr>
                 <th>Gender</th>
                 <td>
-                    <c:if test="${requestScope.student.name}">
+                    <c:if test="${requestScope.instructor.gender}">
                         Male
                     </c:if>
-                    <c:if test="${!requestScope.student.name}">
+                    <c:if test="${!requestScope.instructor.gender}">
                         Female
                     </c:if>
                 </td>
             </tr>
             <tr>
-                <th>Date of birth</th>
-                <td>${requestScope.student.dob}</td>
+                <th>Image</th>
+                <td>
+                    <img src="${requestScope.instructor.image}" style="height:146px;width:111px"/>
+                </td>
             </tr>
             <tr>
                 <th>Phone</th>
-                <td>${requestScope.student.phone}</td>
+                <td>${requestScope.instructor.phone}</td>
             </tr>
             <tr>
                 <th>Email</th>
-                <td>${requestScope.student.email}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>${requestScope.student.address}</td>
+                <td>${requestScope.instructor.email}</td>
             </tr>
         </table>
     </body>

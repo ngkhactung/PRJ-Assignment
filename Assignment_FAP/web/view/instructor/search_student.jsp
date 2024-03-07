@@ -65,11 +65,11 @@
                             <img src="${student.image}" style="height:146px;width:111px"/>
                         </td>
                         <td>
-                            <a href="../student/student_profile?studentID=${student.id}">
+                            <a href="../student/profile?studentID=${student.id}">
                                 ${student.id}</a>
                         </td>
                         <td>
-                            <a href="../student/student_profile?studentID=${student.id}">
+                            <a href="../student/profile?studentID=${student.id}">
                                 ${student.name}</a>
                         </td>
                     </tr>
