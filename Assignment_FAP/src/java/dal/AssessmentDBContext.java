@@ -5,6 +5,7 @@
 package dal;
 
 import entity.Assessment;
+import helper.calculating.Type;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -72,5 +73,37 @@ public class AssessmentDBContext extends DBContext {
             Logger.getLogger(AssessmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return assessList;
+    }
+
+    //Get all types of assessment and total weight of each type for a course by course id
+    public ArrayList<Type> getTypesOfCourse(int courseID) {
+        ArrayList<Type> typeList = new ArrayList<>();
+        try {
+            String sql = "select a.Type, SUM(a.Weight) as Total\n"
+                    + "from Assessment a\n"
+                    + "where a.CourseID = ?\n"
+                    + "Group By a.Type\n"
+                    + "Order by \n"
+                    + "    case \n"
+                    + "        when a.Type = 'Practical Exam' then 1\n"
+                    + "        when a.Type = 'Final Exam' then 2\n"
+                    + "        when a.Type = 'Final Exam Resit' then 3\n"
+                    + "        else 0\n"
+                    + "    end asc";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, courseID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Type type = new Type();
+
+                type.setName(rs.getString("Type"));
+                type.setWeight(rs.getFloat("Total"));
+
+                typeList.add(type);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AssessmentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return typeList;
     }
 }

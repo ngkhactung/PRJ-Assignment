@@ -7,9 +7,13 @@ package controller.student;
 import dal.AssessmentDBContext;
 import dal.GradeDBContext;
 import dal.GroupDBContext;
+import dal.ResultDBContext;
 import entity.Assessment;
 import entity.Grade;
 import entity.Group;
+import helper.calculating.Type;
+import helper.calculating.CalculatingHelper;
+import entity.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,6 +21,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -38,19 +43,47 @@ public class GradeViewController extends HttpServlet {
         String raw_courseID = request.getParameter("courseID");
 
         GroupDBContext groupDB = new GroupDBContext();
-        ArrayList<Group> groupList = groupDB.getGroupsByStudent("HE170386");
+        ArrayList<Group> groupList = groupDB.getGroupsByStudent("HE179003");
 
         if (raw_courseID != null) {
             int courseID = Integer.parseInt(raw_courseID);
+            
+            GradeDBContext gradeDB = new GradeDBContext();
+            ArrayList<Grade> gradeList = gradeDB.getGradeByCourse("HE179003", courseID);
 
             AssessmentDBContext assessDB = new AssessmentDBContext();
             ArrayList<Assessment> assessList = assessDB.getAssessmentByCourse(courseID);
+            //Types are the grade catyegories of the course, 
+            //within each type there are many small assessments
+            ArrayList<Type> typeList = assessDB.getTypesOfCourse(courseID);
 
-            GradeDBContext gradeDB = new GradeDBContext();
-            ArrayList<Grade> gradeList = gradeDB.getGradeByCourse("HE170386", courseID);
+            //Using of LinkedHashMap maintains the insertion order of its elements.
+            LinkedHashMap<Type, ArrayList<Assessment>> categories = new LinkedHashMap<>();
 
-            request.setAttribute("assessList", assessList);
+            for (Type type : typeList) {
+                //Determine the average grade of the type
+                Float valueTotal = CalculatingHelper.caculateTotalOfType(type, gradeList);
+                type.setValue(valueTotal);
+                
+                //Determine which assessments belong to the type
+                ArrayList<Assessment> itemList = new ArrayList<>();
+                for (Assessment assess : assessList) {
+                    if (type.getName().equalsIgnoreCase(assess.getType())) {
+                        itemList.add(assess);
+                    }
+                }
+                
+                categories.put(type, itemList);
+            }
+            
+            Result result = CalculatingHelper.calcuateAverage(typeList);
+            
+            ResultDBContext resultDB = new ResultDBContext();
+            resultDB.setResultIntoTable("HE179003", courseID, result);
+            
+            request.setAttribute("categories", categories);
             request.setAttribute("gradeList", gradeList);
+            request.setAttribute("result", result);
         }
 
         request.setAttribute("groupList", groupList);

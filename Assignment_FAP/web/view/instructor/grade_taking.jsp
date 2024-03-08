@@ -51,7 +51,7 @@
                             <c:forEach items="${requestScope.assessList}" var="assess">
                             <th>
                                 ${assess.name} <br> 
-                                (<fmt:formatNumber pattern="##.#" 
+                                (<fmt:formatNumber pattern="##" 
                                                   value="${assess.weight*100}"/>%)
                             </th>
                         </c:forEach>
