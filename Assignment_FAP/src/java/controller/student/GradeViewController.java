@@ -42,50 +42,47 @@ public class GradeViewController extends HttpServlet {
             throws ServletException, IOException {
         String raw_courseID = request.getParameter("courseID");
 
-        GroupDBContext groupDB = new GroupDBContext();
-        ArrayList<Group> groupList = groupDB.getGroupsByStudent("HE179003");
-
         if (raw_courseID != null) {
             int courseID = Integer.parseInt(raw_courseID);
             
             GradeDBContext gradeDB = new GradeDBContext();
             ArrayList<Grade> gradeList = gradeDB.getGradeByCourse("HE179003", courseID);
 
-            AssessmentDBContext assessDB = new AssessmentDBContext();
-            ArrayList<Assessment> assessList = assessDB.getAssessmentByCourse(courseID);
             //Types are the grade catyegories of the course, 
             //within each type there are many small assessments
+            AssessmentDBContext assessDB = new AssessmentDBContext();
             ArrayList<Type> typeList = assessDB.getTypesOfCourse(courseID);
 
             //Using of LinkedHashMap maintains the insertion order of its elements.
-            LinkedHashMap<Type, ArrayList<Assessment>> categories = new LinkedHashMap<>();
+            LinkedHashMap<Type, ArrayList<Grade>> categories = new LinkedHashMap<>();
 
             for (Type type : typeList) {
                 //Determine the average grade of the type
                 Float valueTotal = CalculatingHelper.caculateTotalOfType(type, gradeList);
                 type.setValue(valueTotal);
                 
-                //Determine which assessments belong to the type
-                ArrayList<Assessment> itemList = new ArrayList<>();
-                for (Assessment assess : assessList) {
-                    if (type.getName().equalsIgnoreCase(assess.getType())) {
-                        itemList.add(assess);
+                //Determine which grades belong to the type
+                ArrayList<Grade> itemList = new ArrayList<>();
+                for (Grade grade : gradeList) {
+                    if (type.getName().equalsIgnoreCase(grade.getAssessment().getType())) {
+                        itemList.add(grade);
                     }
                 }
                 
                 categories.put(type, itemList);
             }
             
-            Result result = CalculatingHelper.calcuateAverage(typeList);
-            
             ResultDBContext resultDB = new ResultDBContext();
-            resultDB.setResultIntoTable("HE179003", courseID, result);
+            Result result = resultDB.getResultByStudentCourse("HE179003", courseID);
             
             request.setAttribute("categories", categories);
             request.setAttribute("gradeList", gradeList);
             request.setAttribute("result", result);
         }
 
+        GroupDBContext groupDB = new GroupDBContext();
+        ArrayList<Group> groupList = groupDB.getGroupsByStudent("HE179003");
+        
         request.setAttribute("groupList", groupList);
         request.getRequestDispatcher("../view/student/grade_view.jsp").forward(request, response);
     }

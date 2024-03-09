@@ -4,8 +4,14 @@
  */
 package helper.calculating;
 
+import dal.AssessmentDBContext;
+import dal.GradeDBContext;
+import entity.Assessment;
+import entity.Course;
 import entity.Result;
 import entity.Grade;
+import entity.Group;
+import entity.Student;
 import java.util.ArrayList;
 
 /**
@@ -14,15 +20,52 @@ import java.util.ArrayList;
  */
 public class CalculatingHelper {
 
+    //Determines the results of all courses of a student
+    public static ArrayList<Result> calculateResultCoursesOfStudent(String studentID, ArrayList<Group> groupList){
+        ArrayList<Result> resultList = new ArrayList<>();
+        //Loop each student's course
+        for (Group group : groupList) {
+            int courseID = group.getCourse().getId();
+            
+            AssessmentDBContext assessDB = new AssessmentDBContext();
+            //Types are the grade catyegories of the course, 
+            //within each type there are many small assessments
+            ArrayList<Type> typeList = assessDB.getTypesOfCourse(courseID);
+            
+            GradeDBContext gradeDB = new GradeDBContext();
+            ArrayList<Grade> gradeList = gradeDB.getGradeByCourse(studentID, courseID);
+            
+            for (Type type : typeList) {
+                //Determine the average grade of the type
+                Float valueTotal = caculateTotalOfType(type, gradeList);
+                type.setValue(valueTotal);
+            }
+            
+            //From list of types of a course then calculate the average grade, 
+            //and status, comment of that course. Then return a result obj
+            Result result = calcuateAverage(typeList);
+        
+            Student student = new Student();
+            student.setId(studentID);
+            result.setStudent(student);
+        
+            Course course = new Course();
+            course.setId(courseID);
+            result.setCourse(course);
+            
+            resultList.add(result);
+        }
+        return resultList;
+    } 
+    
+    //Calculate the total value of each type component of the course
     public static Float caculateTotalOfType(Type type, ArrayList<Grade> gradeList) {
         float sum = 0;
-        int count = 0;
         for (Grade grade : gradeList) {
             //Determine which grades belong to the type being considered
             if (type.getName().equalsIgnoreCase(grade.getAssessment().getType())) {
                 if (grade.getValue() != null) {
                     sum += grade.getValue() * grade.getAssessment().getWeight();
-                    count++;
                 } //If there is a grade of a type that does not have a value, 
                 //the average of the type's grade will not be counted 
                 else {
@@ -33,6 +76,7 @@ public class CalculatingHelper {
         return sum / type.getWeight();
     }
 
+    //Determine average grade, status, and comment on the result of the course
     public static Result calcuateAverage(ArrayList<Type> typeList) {
         Result result = new Result();
 
@@ -59,6 +103,7 @@ public class CalculatingHelper {
         return result;
     }
 
+    //Calculate the average grade of the course in case there is no final exam resit
     public static Result calculateAverageNoRetake(ArrayList<Type> typeList) {
         Result result = new Result();
         Float average = 0f;
@@ -98,6 +143,7 @@ public class CalculatingHelper {
 
     }
 
+    //Calculate the average grade of the course in case of final exam resit
     public static Result calculateAverageRetake(ArrayList<Type> typeList) {
         Result result = new Result();
         Float average = 0f;
@@ -137,6 +183,7 @@ public class CalculatingHelper {
 
     }
 
+    //Determine status of course through average grade and final grade
     public static ArrayList<String> getStatus(Float average, Float finalGrade) {
         ArrayList<String> list = new ArrayList<>();
         if (finalGrade >= 4 && average >= 5) {

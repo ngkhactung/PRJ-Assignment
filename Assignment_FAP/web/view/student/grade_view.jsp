@@ -45,27 +45,15 @@
                         <tr>
                             <td rowspan="${category.value.size() + 2}">${category.key.name}</td>
                         </tr>
-                        <c:forEach items="${category.value}" var="item" varStatus="index">
+                        <c:forEach items="${category.value}" var="item">
                             <tr>
-                                <td>${item.name}</td>
+                                <td>${item.assessment.name}</td>
                                 <td>
                                     <fmt:formatNumber pattern="##" 
-                                                      value="${item.weight*100}"/>%
+                                                      value="${item.assessment.weight*100}"/>%
                                 </td>
-                                <td>
-                                    <c:forEach items="${requestScope.gradeList}" var="grade">
-                                        <c:if test="${grade.assessment.id == item.id}">
-                                            ${grade.value}
-                                        </c:if>
-                                    </c:forEach>
-                                </td>
-                                <td>
-                                    <c:forEach items="${requestScope.gradeList}" var="grade">
-                                        <c:if test="${grade.assessment.id == item.id}">
-                                            ${grade.comment}
-                                        </c:if>
-                                    </c:forEach>
-                                </td>
+                                <td>${item.value}</td>
+                                <td>${item.comment}</td>
                             </tr>
                         </c:forEach>
                         <tr>

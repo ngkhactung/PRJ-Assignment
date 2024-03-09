@@ -35,18 +35,18 @@ public class AttendanceViewController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String raw_courseID = request.getParameter("courseID");
-        int courseID = (raw_courseID == null) ? 1 : Integer.parseInt(raw_courseID);
-        
         GroupDBContext groupDB = new GroupDBContext();
-        ArrayList<Group> groupList = groupDB.getGroupsByStudent("HE170386");
-        
+        ArrayList<Group> groupList = groupDB.getGroupsByStudent("HE179003");
+
+        String raw_courseID = request.getParameter("courseID");
+        int courseID = (raw_courseID == null) ? groupList.get(0).getCourse().getId() : Integer.parseInt(raw_courseID);
+
         SessionDBContext sessDB = new SessionDBContext();
-        ArrayList<Session> sessionList = sessDB.getSessionsForAttendance("HE170386", courseID);
-        
+        ArrayList<Session> sessionList = sessDB.getSessionsForAttendance("HE179003", courseID);
+
         AttendanceDBContext attDB = new AttendanceDBContext();
-        ArrayList<Attendance> attList = attDB.getAttedanceByCourse("HE170386", courseID);
-        
+        ArrayList<Attendance> attList = attDB.getAttedanceByCourse("HE179003", courseID);
+
         request.setAttribute("courseID", courseID);
         request.setAttribute("groupList", groupList);
         request.setAttribute("sessList", sessionList);

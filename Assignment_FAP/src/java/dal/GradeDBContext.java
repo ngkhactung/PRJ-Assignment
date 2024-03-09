@@ -66,7 +66,7 @@ public class GradeDBContext extends DBContext {
     public ArrayList<Grade> getGradeByCourse(String studentID, int courseID) {
         ArrayList<Grade> gradeList = new ArrayList<>();
         try {
-            String sql = "select a.ID as AssessmentID, a.Type, a.Weight, "
+            String sql = "select a.ID as AssessmentID, a.Type, a.Name, a.Weight, "
                     + "stu.ID as StudentID, grade.Value, grade.Comment\n"
                     + "from Groups g inner join Course c on g.CourseID = c.ID\n"
                     + "              inner join Assessment a on c.ID = a.CourseID\n"
@@ -84,6 +84,7 @@ public class GradeDBContext extends DBContext {
                 Assessment assessment = new Assessment();
                 assessment.setId(rs.getInt("AssessmentID"));
                 assessment.setType(rs.getString("Type"));
+                assessment.setName(rs.getString("Name"));
                 assessment.setWeight(rs.getFloat("Weight"));
                 grade.setAssessment(assessment);
 

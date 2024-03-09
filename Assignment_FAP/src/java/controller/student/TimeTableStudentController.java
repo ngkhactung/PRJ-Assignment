@@ -5,11 +5,16 @@
 package controller.student;
 
 import dal.AttendanceDBContext;
+import dal.GroupDBContext;
+import dal.ResultDBContext;
 import dal.SessionDBContext;
 import dal.SlotDBContext;
 import entity.Attendance;
+import entity.Group;
+import entity.Result;
 import entity.Session;
 import entity.Slot;
+import helper.calculating.CalculatingHelper;
 import helper.date.DateTimeHelper;
 import helper.date.Week;
 import java.io.IOException;
@@ -57,8 +62,8 @@ public class TimeTableStudentController extends HttpServlet {
             daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
             Date from = Date.valueOf(startDay);
             Date to = Date.valueOf(startDay.plusDays(6));
-            sessionList = sessDB.getTimeTableOfStudent("HE170386", from, to);
-            attList = attDB.getAttendanceByWeek("HE170386", from, to);
+            sessionList = sessDB.getTimeTableOfStudent("HE179003", from, to);
+            attList = attDB.getAttendanceByWeek("HE179003", from, to);
         }
 
         if (raw_year != null && raw_startDay == null) {
@@ -69,15 +74,15 @@ public class TimeTableStudentController extends HttpServlet {
                 daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
                 Date from = Date.valueOf(startDay);
                 Date to = Date.valueOf(startDay.plusDays(6));
-                sessionList = sessDB.getTimeTableOfStudent("HE170386", from, to);
-                attList = attDB.getAttendanceByWeek("HE170386", from, to);
+                sessionList = sessDB.getTimeTableOfStudent("HE179003", from, to);
+                attList = attDB.getAttendanceByWeek("HE179003", from, to);
             } else {
                 startDay = DateTimeHelper.getStartDayWeek(LocalDate.now());
                 daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
                 Date from = Date.valueOf(startDay);
                 Date to = Date.valueOf(startDay.plusDays(6));
-                sessionList = sessDB.getTimeTableOfStudent("HE170386", from, to);
-                attList = attDB.getAttendanceByWeek("HE170386", from, to);
+                sessionList = sessDB.getTimeTableOfStudent("HE179003", from, to);
+                attList = attDB.getAttendanceByWeek("HE179003", from, to);
             }
         }
 
@@ -88,10 +93,21 @@ public class TimeTableStudentController extends HttpServlet {
             daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
             Date from = Date.valueOf(startDay);
             Date to = Date.valueOf(startDay.plusDays(6));
-            sessionList = sessDB.getTimeTableOfStudent("HE170386", from, to);
-            attList = attDB.getAttendanceByWeek("HE170386", from, to);
+            sessionList = sessDB.getTimeTableOfStudent("HE179003", from, to);
+            attList = attDB.getAttendanceByWeek("HE179003", from, to);
         }
 
+        //Get list of courses of a student
+        GroupDBContext groupDB = new GroupDBContext();
+        ArrayList<Group> groupList = groupDB.getGroupsByStudent("HE179003");
+        
+        //Calculate the result of each course 
+        ArrayList<Result> resultList = CalculatingHelper.calculateResultCoursesOfStudent("HE179003", groupList);
+        
+        //After calculating then insert list of results to table of result in database
+        ResultDBContext resultDB = new ResultDBContext();
+        resultDB.setResultIntoTable(resultList);
+        
         SlotDBContext slotDB = new SlotDBContext();
         ArrayList<Slot> slots = slotDB.getSlot();
 
