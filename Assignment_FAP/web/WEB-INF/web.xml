@@ -44,6 +44,10 @@
         <servlet-name>InstructorProfileController</servlet-name>
         <servlet-class>controller.instructor.InstructorProfileController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AcademicTranscriptController</servlet-name>
+        <servlet-class>controller.student.AcademicTranscriptController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TimeTableInstructorController</servlet-name>
         <url-pattern>/instructor/timetable</url-pattern>
@@ -87,5 +91,9 @@
     <servlet-mapping>
         <servlet-name>InstructorProfileController</servlet-name>
         <url-pattern>/instructor/profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AcademicTranscriptController</servlet-name>
+        <url-pattern>/student/academic_transcript</url-pattern>
     </servlet-mapping>
 </web-app>

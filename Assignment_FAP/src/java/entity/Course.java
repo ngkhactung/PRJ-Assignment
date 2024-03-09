@@ -12,6 +12,8 @@ public class Course {
     private int id;
     private String code;
     private String name;
+    private String preRequisite;
+    private String replacedCourse;
     private int credit;
 
     public Course() {
@@ -48,6 +50,22 @@ public class Course {
         this.name = name;
     }
 
+    public String getPreRequisite() {
+        return preRequisite;
+    }
+
+    public void setPreRequisite(String preRequisite) {
+        this.preRequisite = preRequisite;
+    }
+
+    public String getReplacedCourse() {
+        return replacedCourse;
+    }
+
+    public void setReplacedCourse(String replacedCourse) {
+        this.replacedCourse = replacedCourse;
+    }
+
     public int getCredit() {
         return credit;
     }
@@ -55,6 +73,5 @@ public class Course {
     public void setCredit(int credit) {
         this.credit = credit;
     }
-    
     
 }

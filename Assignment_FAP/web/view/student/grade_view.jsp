@@ -76,16 +76,21 @@
                         <td rowspan="3">COURSE TOTAL</td>
                         <td>AVERAGE</td>
                         <td colspan="3">
-                            <fmt:formatNumber pattern="0.0" 
-                                              value="${requestScope.result.average}"/>
+                            <c:if test="${requestScope.result.average != null}">
+                                <fmt:formatNumber pattern="0.0" 
+                                                  value="${requestScope.result.average}"/>
+                            </c:if>
+                            <c:if test="${requestScope.result.average == null}">
+                                0.0
+                            </c:if>
                         </td>
                     </tr>
                     <tr>
                         <td>STATUS</td>
-                        <c:if test="${requestScope.result.status != 'NOT PASS'}">
+                        <c:if test="${requestScope.result.status != 'NOT PASSED'}">
                             <td style="color: green"colspan="3">${requestScope.result.status}</td>
                         </c:if>
-                        <c:if test="${requestScope.result.status == 'NOT PASS'}">
+                        <c:if test="${requestScope.result.status == 'NOT PASSED'}">
                             <td style="color: red"colspan="3">${requestScope.result.status}</td>
                         </c:if>
                     </tr>

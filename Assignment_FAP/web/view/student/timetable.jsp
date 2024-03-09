@@ -92,5 +92,7 @@
                onclick="window.location.href = 'attendance_view'" />
         <input type="button" value="View Grade" 
                onclick="window.location.href = 'grade_view'" />
+        <input type="button" value="Academic Transcript" 
+               onclick="window.location.href = 'academic_transcript'" />
     </body>
 </html>

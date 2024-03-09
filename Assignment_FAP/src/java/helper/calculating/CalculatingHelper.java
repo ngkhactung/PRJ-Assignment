@@ -85,7 +85,6 @@ public class CalculatingHelper {
         //divided into two cases: no final retake grade, or there is final retake grade.
         for (Type type : typeList) {
             if (type.getValue() == null && !type.getName().equals("Final Exam Resit")) {
-                result.setAverage(0.0f);
                 result.setStatus("STUDYING");
                 return result;
             }
@@ -136,8 +135,8 @@ public class CalculatingHelper {
         } //There is one or more total of type is 0
         else {
             result.setAverage(average);
-            result.setStatus("NOT PASS");
-            result.setComment("Not Pass because the total of " + typeName + " is 0");
+            result.setStatus("NOT PASSED");
+            result.setComment("Not Passed because the total of " + typeName + " is 0");
             return result;
         }
 
@@ -176,8 +175,8 @@ public class CalculatingHelper {
         } //There is one or more total of type is 0
         else {
             result.setAverage(average);
-            result.setStatus("NOT PASS");
-            result.setComment("Not Pass because the total of " + typeName + " is 0");
+            result.setStatus("NOT PASSED");
+            result.setComment("Not Passed because the total of " + typeName + " is 0");
             return result;
         }
 
@@ -187,16 +186,16 @@ public class CalculatingHelper {
     public static ArrayList<String> getStatus(Float average, Float finalGrade) {
         ArrayList<String> list = new ArrayList<>();
         if (finalGrade >= 4 && average >= 5) {
-            list.add("PASS");
+            list.add("PASSED");
             list.add("");
         } else if (finalGrade < 4 && average >= 5) {
-            list.add("NOT PASS");
+            list.add("NOT PASSED");
             list.add("Grade of final is less than 4");
         } else if (finalGrade >= 4 && average < 5) {
-            list.add("NOT PASS");
+            list.add("NOT PASSED");
             list.add("Average is less than 5");
         } else {
-            list.add("NOT PASS");
+            list.add("NOT PASSED");
             list.add("Grade of final is less than 4 and Average is less than 5");
         }
         return list;

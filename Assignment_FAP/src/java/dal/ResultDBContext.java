@@ -4,6 +4,7 @@
  */
 package dal;
 
+import entity.Course;
 import entity.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.Types;
 
 /**
  *
@@ -18,6 +20,7 @@ import java.util.logging.Logger;
  */
 public class ResultDBContext extends DBContext {
 
+    //Get the result record of a course of a student
     public Result getResultByStudentCourse(String studentID, int courseID) {
         Result result = new Result();
         try {
@@ -30,7 +33,9 @@ public class ResultDBContext extends DBContext {
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
 
-                result.setAverage(rs.getFloat("Average"));
+                if (rs.getObject("Average") != null) {
+                    result.setAverage(rs.getFloat("Average"));
+                }
                 result.setStatus(rs.getString("Status"));
                 result.setComment(rs.getString("Comment"));
 
@@ -39,6 +44,44 @@ public class ResultDBContext extends DBContext {
             Logger.getLogger(ResultDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
+    }
+
+    //Get all course result records for all courses for a student
+    public ArrayList<Result> getAllResultsOfStudent(String studentID) {
+        ArrayList<Result> resultList = new ArrayList<>();
+        try {
+            String sql = "select c.Code, c.PreRequisite, c.ReplacedCourse, c.Name, c.Credits, r.Average, r.Status\n"
+                    + "from Student stu inner join EnrollMent e on e.StudentID = stu.ID\n"
+                    + "                 inner join Groups g on g.ID = e.GroupID\n"
+                    + "                 inner join Course c on g.CourseID = c.ID\n"
+                    + "                 left join Result r on stu.ID = r.StudentID and c.ID = r.CourseID\n"
+                    + "where stu.ID = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, studentID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Result result = new Result();
+
+                Course course = new Course();
+                course.setCode(rs.getString("Code"));
+                course.setPreRequisite(rs.getString("PreRequisite"));
+                course.setReplacedCourse(rs.getString("ReplacedCourse"));
+                course.setName(rs.getString("Name"));
+                course.setCredit(rs.getInt("Credits"));
+                result.setCourse(course);
+
+                if (rs.getObject("Average") != null) {
+                    result.setAverage(rs.getFloat("Average"));
+                }
+
+                result.setStatus(rs.getString("Status"));
+
+                resultList.add(result);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ResultDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultList;
     }
 
     //Delete all result course records of a student, 
@@ -58,7 +101,11 @@ public class ResultDBContext extends DBContext {
                 PreparedStatement insert = connection.prepareStatement(sql_insert_result);
                 insert.setString(1, result.getStudent().getId());
                 insert.setInt(2, result.getCourse().getId());
-                insert.setFloat(3, result.getAverage());
+                if (result.getAverage() != null) {
+                    insert.setFloat(3, result.getAverage());
+                } else {
+                    insert.setNull(3, Types.FLOAT);
+                }
                 insert.setString(4, result.getStatus());
                 insert.setString(5, result.getComment());
                 insert.executeUpdate();
