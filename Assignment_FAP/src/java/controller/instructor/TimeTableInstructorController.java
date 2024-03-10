@@ -4,8 +4,10 @@
  */
 package controller.instructor;
 
+import controller.authentication.BaseRequiredAuthenController;
 import dal.SessionDBContext;
 import dal.SlotDBContext;
+import entity.Account;
 import entity.Session;
 import entity.Slot;
 import helper.date.DateTimeHelper;
@@ -23,7 +25,7 @@ import java.sql.Date;
  *
  * @author Admin
  */
-public class TimeTableInstructorController extends HttpServlet {
+public class TimeTableInstructorController extends BaseRequiredAuthenController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -106,7 +108,7 @@ public class TimeTableInstructorController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -120,7 +122,7 @@ public class TimeTableInstructorController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         processRequest(request, response);
     }

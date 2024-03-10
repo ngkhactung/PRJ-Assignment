@@ -48,6 +48,14 @@
         <servlet-name>AcademicTranscriptController</servlet-name>
         <servlet-class>controller.student.AcademicTranscriptController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginAuthenticationController</servlet-name>
+        <servlet-class>controller.authentication.LoginAuthenticationController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutAuthenticationController</servlet-name>
+        <servlet-class>controller.authentication.LogoutAuthenticationController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TimeTableInstructorController</servlet-name>
         <url-pattern>/instructor/timetable</url-pattern>
@@ -95,5 +103,13 @@
     <servlet-mapping>
         <servlet-name>AcademicTranscriptController</servlet-name>
         <url-pattern>/student/academic_transcript</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginAuthenticationController</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutAuthenticationController</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 </web-app>

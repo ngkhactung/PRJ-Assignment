@@ -88,5 +88,6 @@
         
         <button onclick="window.location.href = 'grade_taking'">Take Grade</button>
         <button onclick="window.location.href = 'search_student'">Search Student</button>
+        <button onclick="window.location.href = '/assign.fap.fpt/logout'">Log Out</button>
     </body>
 </html>
