@@ -21,6 +21,41 @@ import java.sql.Types;
  */
 public class GradeDBContext extends DBContext {
 
+    //Get all grades without its value and comment except the final exam, final re-exam and practice test 
+    //of students belonging to the group with the given group id.
+    public ArrayList<Grade> getGradeNoValueByGroup(int groupID) {
+        ArrayList<Grade> gradeList = new ArrayList<>();
+        try {
+            String sql = "select a.ID as AssessmentID, stu.ID as StudentID\n"
+                    + "from Groups g inner join Course c on g.CourseID = c.ID\n"
+                    + "		 inner join Assessment a on c.ID = a.CourseID\n"
+                    + "		 inner join EnrollMent e on g.ID = e.GroupID\n"
+                    + "		 inner join Student stu on e.StudentID = stu.ID\n"
+                    + "		 left join Grade grade on a.ID = grade.AssessID and stu.ID = grade.StudentID\n"
+                    + "where g.ID = ? and a.Type <> 'Final Exam' and a.Type <> 'Final Exam Resit' \n"
+                    + "and a.Type <> 'Practical Exam'";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, groupID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Grade grade = new Grade();
+
+                Assessment assessment = new Assessment();
+                assessment.setId(rs.getInt("AssessmentID"));
+                grade.setAssessment(assessment);
+
+                Student student = new Student();
+                student.setId(rs.getString("StudentID"));
+                grade.setStudent(student);
+
+                gradeList.add(grade);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return gradeList;
+    }
+    
     //Get all grades except the final exam, final re-exam and practice test 
     //of students belonging to the group with the given group id.
     public ArrayList<Grade> getGradeByGroup(int groupID) {

@@ -16,7 +16,8 @@ public class Instructor {
     private String phone;
     private String email;
     private String image;
-
+    private Account account;
+    
     public Instructor() {
     }
 
@@ -74,6 +75,14 @@ public class Instructor {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
 }

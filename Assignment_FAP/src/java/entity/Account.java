@@ -11,7 +11,9 @@ package entity;
 public class Account {
     private String username;
     private String password;
-
+    private Student student;
+    private Instructor instructor;
+    
     public Account() {
     }
 
@@ -29,6 +31,22 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Instructor getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(Instructor instructor) {
+        this.instructor = instructor;
     }
     
 }

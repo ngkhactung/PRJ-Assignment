@@ -5,7 +5,10 @@
 
 package controller.student;
 
+import controller.authorization.BaseRoleBACController;
 import dal.ResultDBContext;
+import entity.Account;
+import entity.Feature;
 import entity.Result;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +22,7 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class AcademicTranscriptController extends HttpServlet {
+public class AcademicTranscriptController extends BaseRoleBACController {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -28,10 +31,10 @@ public class AcademicTranscriptController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
     throws ServletException, IOException {
         ResultDBContext resultDB = new ResultDBContext();
-        ArrayList<Result> resultList = resultDB.getAllResultsOfStudent("HE179003");
+        ArrayList<Result> resultList = resultDB.getAllResultsOfStudent(account.getStudent().getId());
         
         request.setAttribute("resultList", resultList);
         request.getRequestDispatcher("../view/student/academic_transcript.jsp").forward(request, response);
@@ -46,9 +49,10 @@ public class AcademicTranscriptController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
     throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     } 
 
     /** 
@@ -59,9 +63,10 @@ public class AcademicTranscriptController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
     throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /** 

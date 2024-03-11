@@ -4,11 +4,14 @@
  */
 package controller.student;
 
+import controller.authorization.BaseRoleBACController;
 import dal.AssessmentDBContext;
 import dal.GradeDBContext;
 import dal.GroupDBContext;
 import dal.ResultDBContext;
+import entity.Account;
 import entity.Assessment;
+import entity.Feature;
 import entity.Grade;
 import entity.Group;
 import helper.calculating.Type;
@@ -27,7 +30,7 @@ import java.util.LinkedHashMap;
  *
  * @author Admin
  */
-public class GradeViewController extends HttpServlet {
+public class GradeViewController extends BaseRoleBACController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,7 +41,7 @@ public class GradeViewController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         String raw_courseID = request.getParameter("courseID");
 
@@ -46,7 +49,7 @@ public class GradeViewController extends HttpServlet {
             int courseID = Integer.parseInt(raw_courseID);
             
             GradeDBContext gradeDB = new GradeDBContext();
-            ArrayList<Grade> gradeList = gradeDB.getGradeByCourse("HE179003", courseID);
+            ArrayList<Grade> gradeList = gradeDB.getGradeByCourse(account.getStudent().getId(), courseID);
 
             //Types are the grade catyegories of the course, 
             //within each type there are many small assessments
@@ -73,7 +76,7 @@ public class GradeViewController extends HttpServlet {
             }
             
             ResultDBContext resultDB = new ResultDBContext();
-            Result result = resultDB.getResultByStudentCourse("HE179003", courseID);
+            Result result = resultDB.getResultByStudentCourse(account.getStudent().getId(), courseID);
             
             request.setAttribute("categories", categories);
             request.setAttribute("gradeList", gradeList);
@@ -81,7 +84,7 @@ public class GradeViewController extends HttpServlet {
         }
 
         GroupDBContext groupDB = new GroupDBContext();
-        ArrayList<Group> groupList = groupDB.getGroupsByStudent("HE179003");
+        ArrayList<Group> groupList = groupDB.getGroupsByStudent(account.getStudent().getId());
         
         request.setAttribute("groupList", groupList);
         request.getRequestDispatcher("../view/student/grade_view.jsp").forward(request, response);
@@ -97,9 +100,10 @@ public class GradeViewController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**
@@ -111,9 +115,10 @@ public class GradeViewController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**

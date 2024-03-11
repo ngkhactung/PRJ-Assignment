@@ -5,6 +5,8 @@
 package dal;
 
 import entity.Account;
+import entity.Instructor;
+import entity.Student;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,10 +22,11 @@ public class AccountDBContext extends DBContext {
     //Get information of a account by username and password
     public Account getAccount(String username, String password) {
         try {
-        Account account = new Account();
-            String sql = "Select Username, [Password]\n"
-                    + "from Account\n"
-                    + "where username = ? and password = ?";
+            Account account = new Account();
+            String sql = "select a.Username, a.Password, s.ID as studentID, ins.ID as instructorID\n"
+                    + "from Account a left join Student s on a.Username = s.Username\n"
+                    + "		      left join Instructor ins on a.Username = ins.Username\n"
+                    + "where a.Username = ? and a.Password = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
             stm.setString(2, password);
@@ -31,6 +34,18 @@ public class AccountDBContext extends DBContext {
             if (rs.next()) {
                 account.setUsername(rs.getString("Username"));
                 account.setPassword(rs.getString("Password"));
+                
+                if (rs.getString("studentID") != null) {
+                    Student student = new Student();
+                    student.setId(rs.getString("studentID"));
+                    account.setStudent(student);
+                }
+                
+                if(rs.getObject("instructorID") != null){
+                    Instructor instructor = new Instructor();
+                    instructor.setId(rs.getInt("instructorID"));
+                    account.setInstructor(instructor);
+                }
                 
                 return account;
             }

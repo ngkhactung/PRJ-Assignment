@@ -4,10 +4,13 @@
  */
 package controller.student;
 
+import controller.authorization.BaseRoleBACController;
 import dal.AttendanceDBContext;
 import dal.GroupDBContext;
 import dal.SessionDBContext;
+import entity.Account;
 import entity.Attendance;
+import entity.Feature;
 import entity.Group;
 import entity.Session;
 import java.io.IOException;
@@ -22,7 +25,7 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class AttendanceViewController extends HttpServlet {
+public class AttendanceViewController extends BaseRoleBACController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,19 +36,19 @@ public class AttendanceViewController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         GroupDBContext groupDB = new GroupDBContext();
-        ArrayList<Group> groupList = groupDB.getGroupsByStudent("HE179003");
+        ArrayList<Group> groupList = groupDB.getGroupsByStudent(account.getStudent().getId());
 
         String raw_courseID = request.getParameter("courseID");
         int courseID = (raw_courseID == null) ? groupList.get(0).getCourse().getId() : Integer.parseInt(raw_courseID);
 
         SessionDBContext sessDB = new SessionDBContext();
-        ArrayList<Session> sessionList = sessDB.getSessionsForAttendance("HE179003", courseID);
+        ArrayList<Session> sessionList = sessDB.getSessionsForAttendance(account.getStudent().getId(), courseID);
 
         AttendanceDBContext attDB = new AttendanceDBContext();
-        ArrayList<Attendance> attList = attDB.getAttedanceByCourse("HE179003", courseID);
+        ArrayList<Attendance> attList = attDB.getAttedanceByCourse(account.getStudent().getId(), courseID);
 
         request.setAttribute("courseID", courseID);
         request.setAttribute("groupList", groupList);
@@ -64,9 +67,10 @@ public class AttendanceViewController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**
@@ -78,9 +82,10 @@ public class AttendanceViewController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**

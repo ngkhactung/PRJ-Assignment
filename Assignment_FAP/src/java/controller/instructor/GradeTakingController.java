@@ -4,10 +4,13 @@
  */
 package controller.instructor;
 
+import controller.authorization.BaseRoleBACController;
 import dal.AssessmentDBContext;
 import dal.GradeDBContext;
 import dal.GroupDBContext;
+import entity.Account;
 import entity.Assessment;
+import entity.Feature;
 import entity.Grade;
 import entity.Group;
 import java.io.IOException;
@@ -22,7 +25,7 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class GradeTakingController extends HttpServlet {
+public class GradeTakingController extends BaseRoleBACController {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -33,12 +36,13 @@ public class GradeTakingController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
         String raw_groupID = request.getParameter("groupID");
 
         GroupDBContext groupDB = new GroupDBContext();
-        ArrayList<Group> groupList = groupDB.getGroupsByInstructor(1);
+        ArrayList<Group> groupList = groupDB.getGroupsByInstructor(account.getInstructor().getId());
 
         if (raw_groupID != null) {
             int groupID = Integer.parseInt(raw_groupID);
@@ -68,12 +72,13 @@ public class GradeTakingController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
         int groupID = Integer.parseInt(request.getParameter("groupID"));
 
         GradeDBContext gradeDB = new GradeDBContext();
-        ArrayList<Grade> gradeList = gradeDB.getGradeByGroup(groupID);
+        ArrayList<Grade> gradeList = gradeDB.getGradeNoValueByGroup(groupID);
 
         for (Grade grade : gradeList) {
             String raw_grade = request.getParameter("grade" + grade.getStudent().getId()

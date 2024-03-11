@@ -4,8 +4,11 @@
  */
 package controller.student;
 
+import controller.authorization.BaseRoleBACController;
 import dal.ResultDBContext;
 import dal.StudentDBContext;
+import entity.Account;
+import entity.Feature;
 import entity.Result;
 import entity.Student;
 import java.io.IOException;
@@ -20,7 +23,7 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class StudentProfileController extends HttpServlet {
+public class StudentProfileController extends BaseRoleBACController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,19 +34,27 @@ public class StudentProfileController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         String studentID = request.getParameter("studentID");
 
+        //If the student ID is not null, it is because the instructor accessed the url
         if (studentID != null) {
             StudentDBContext studentDB = new StudentDBContext();
             Student student = studentDB.getStudent(studentID);
-            
+
             ResultDBContext resultDB = new ResultDBContext();
             ArrayList<Result> resultList = resultDB.getAllResultsOfStudent(studentID);
-            
+
             request.setAttribute("student", student);
             request.setAttribute("resultList", resultList);
+            request.getRequestDispatcher("../view/student/profile.jsp").forward(request, response);
+        } //If the student ID is null, it is because the student accessed the url
+        else {
+            StudentDBContext studentDB = new StudentDBContext();
+            Student student = studentDB.getStudent(account.getStudent().getId());
+            
+            request.setAttribute("student", student);
             request.getRequestDispatcher("../view/student/profile.jsp").forward(request, response);
         }
     }
@@ -58,9 +69,10 @@ public class StudentProfileController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**
@@ -72,9 +84,10 @@ public class StudentProfileController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**

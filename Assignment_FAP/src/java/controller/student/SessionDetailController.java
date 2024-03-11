@@ -4,10 +4,13 @@
  */
 package controller.student;
 
+import controller.authorization.BaseRoleBACController;
 import dal.AttendanceDBContext;
 import dal.GroupDBContext;
 import dal.SessionDBContext;
+import entity.Account;
 import entity.Attendance;
+import entity.Feature;
 import entity.Group;
 import entity.Session;
 import java.io.IOException;
@@ -16,12 +19,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  *
  * @author Admin
  */
-public class SessionDetailController extends HttpServlet {
+public class SessionDetailController extends BaseRoleBACController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,7 +36,7 @@ public class SessionDetailController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         int sessionID = Integer.parseInt(request.getParameter("sessId"));
         
@@ -40,7 +44,7 @@ public class SessionDetailController extends HttpServlet {
         Session session = sessDB.getSession(sessionID);
         
         AttendanceDBContext attDB = new AttendanceDBContext();
-        Attendance att = attDB.getAttedanceByStudent(sessionID, "HE170386");
+        Attendance att = attDB.getAttedanceByStudent(sessionID, account.getStudent().getId());
         
         GroupDBContext groupDB = new GroupDBContext();
         Group group = groupDB.getGroupBySession(sessionID);
@@ -61,9 +65,10 @@ public class SessionDetailController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**
@@ -75,9 +80,10 @@ public class SessionDetailController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**

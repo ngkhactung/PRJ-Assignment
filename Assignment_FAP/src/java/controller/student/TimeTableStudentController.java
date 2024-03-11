@@ -4,12 +4,15 @@
  */
 package controller.student;
 
+import controller.authorization.BaseRoleBACController;
 import dal.AttendanceDBContext;
 import dal.GroupDBContext;
 import dal.ResultDBContext;
 import dal.SessionDBContext;
 import dal.SlotDBContext;
+import entity.Account;
 import entity.Attendance;
+import entity.Feature;
 import entity.Group;
 import entity.Result;
 import entity.Session;
@@ -30,7 +33,7 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class TimeTableStudentController extends HttpServlet {
+public class TimeTableStudentController extends BaseRoleBACController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,7 +44,7 @@ public class TimeTableStudentController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         String raw_year = request.getParameter("year");
         String raw_startDay = request.getParameter("startDay");
@@ -62,8 +65,8 @@ public class TimeTableStudentController extends HttpServlet {
             daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
             Date from = Date.valueOf(startDay);
             Date to = Date.valueOf(startDay.plusDays(6));
-            sessionList = sessDB.getTimeTableOfStudent("HE179003", from, to);
-            attList = attDB.getAttendanceByWeek("HE179003", from, to);
+            sessionList = sessDB.getTimeTableOfStudent(account.getStudent().getId(), from, to);
+            attList = attDB.getAttendanceByWeek(account.getStudent().getId(), from, to);
         }
 
         if (raw_year != null && raw_startDay == null) {
@@ -74,15 +77,15 @@ public class TimeTableStudentController extends HttpServlet {
                 daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
                 Date from = Date.valueOf(startDay);
                 Date to = Date.valueOf(startDay.plusDays(6));
-                sessionList = sessDB.getTimeTableOfStudent("HE179003", from, to);
-                attList = attDB.getAttendanceByWeek("HE179003", from, to);
+                sessionList = sessDB.getTimeTableOfStudent(account.getStudent().getId(), from, to);
+                attList = attDB.getAttendanceByWeek(account.getStudent().getId(), from, to);
             } else {
                 startDay = DateTimeHelper.getStartDayWeek(LocalDate.now());
                 daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
                 Date from = Date.valueOf(startDay);
                 Date to = Date.valueOf(startDay.plusDays(6));
-                sessionList = sessDB.getTimeTableOfStudent("HE179003", from, to);
-                attList = attDB.getAttendanceByWeek("HE179003", from, to);
+                sessionList = sessDB.getTimeTableOfStudent(account.getStudent().getId(), from, to);
+                attList = attDB.getAttendanceByWeek(account.getStudent().getId(), from, to);
             }
         }
 
@@ -93,21 +96,22 @@ public class TimeTableStudentController extends HttpServlet {
             daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
             Date from = Date.valueOf(startDay);
             Date to = Date.valueOf(startDay.plusDays(6));
-            sessionList = sessDB.getTimeTableOfStudent("HE179003", from, to);
-            attList = attDB.getAttendanceByWeek("HE179003", from, to);
+            sessionList = sessDB.getTimeTableOfStudent(account.getStudent().getId(), from, to);
+            attList = attDB.getAttendanceByWeek(account.getStudent().getId(), from, to);
         }
 
         //Get list of courses of a student
         GroupDBContext groupDB = new GroupDBContext();
-        ArrayList<Group> groupList = groupDB.getGroupsByStudent("HE179003");
-        
+        ArrayList<Group> groupList = groupDB.getGroupsByStudent(account.getStudent().getId());
+
         //Calculate the result of each course 
-        ArrayList<Result> resultList = CalculatingHelper.calculateResultCoursesOfStudent("HE179003", groupList);
-        
+        ArrayList<Result> resultList
+                = CalculatingHelper.calculateResultCoursesOfStudent(account.getStudent().getId(), groupList);
+
         //After calculating then insert list of results to table of result in database
         ResultDBContext resultDB = new ResultDBContext();
         resultDB.setResultIntoTable(resultList);
-        
+
         SlotDBContext slotDB = new SlotDBContext();
         ArrayList<Slot> slots = slotDB.getSlot();
 
@@ -131,9 +135,10 @@ public class TimeTableStudentController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**
@@ -145,9 +150,10 @@ public class TimeTableStudentController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**

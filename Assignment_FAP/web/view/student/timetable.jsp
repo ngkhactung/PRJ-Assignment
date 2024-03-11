@@ -94,5 +94,9 @@
                onclick="window.location.href = 'grade_view'" />
         <input type="button" value="Academic Transcript" 
                onclick="window.location.href = 'academic_transcript'" />
+        <input type="button" value="View Profile" 
+               onclick="window.location.href = 'profile'" />
+        <input type="button" value="Log Out" 
+               onclick="window.location.href = '/assign.fap.fpt/logout'" />
     </body>
 </html>

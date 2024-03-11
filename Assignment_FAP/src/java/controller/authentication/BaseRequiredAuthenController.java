@@ -61,7 +61,7 @@ public abstract class BaseRequiredAuthenController extends HttpServlet {
         if (account != null) {
             doGet(request, response, account);
         } else {
-            request.getRequestDispatcher("/view/authentication/access_denied.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/authentication/login_required.jsp").forward(request, response);
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class BaseRequiredAuthenController extends HttpServlet {
         if (account != null) {
             doPost(request, response, account);
         } else {
-            request.getRequestDispatcher("/view/authentication/access_denied.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/authentication/login_required.jsp").forward(request, response);
         }
     }
 

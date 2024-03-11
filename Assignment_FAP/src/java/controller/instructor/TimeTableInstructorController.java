@@ -5,9 +5,11 @@
 package controller.instructor;
 
 import controller.authentication.BaseRequiredAuthenController;
+import controller.authorization.BaseRoleBACController;
 import dal.SessionDBContext;
 import dal.SlotDBContext;
 import entity.Account;
+import entity.Feature;
 import entity.Session;
 import entity.Slot;
 import helper.date.DateTimeHelper;
@@ -25,7 +27,7 @@ import java.sql.Date;
  *
  * @author Admin
  */
-public class TimeTableInstructorController extends BaseRequiredAuthenController {
+public class TimeTableInstructorController extends BaseRoleBACController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,7 +38,7 @@ public class TimeTableInstructorController extends BaseRequiredAuthenController 
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         String raw_year = request.getParameter("year");
         String raw_startDay = request.getParameter("startDay");
@@ -55,7 +57,7 @@ public class TimeTableInstructorController extends BaseRequiredAuthenController 
             daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
             Date from = Date.valueOf(startDay);
             Date to = Date.valueOf(startDay.plusDays(6));
-            sessionList = sessDB.getTimeTableOfInstructor(3, from, to);
+            sessionList = sessDB.getTimeTableOfInstructor(account.getInstructor().getId(), from, to);
         }
 
         if (raw_year != null && raw_startDay == null) {
@@ -66,13 +68,13 @@ public class TimeTableInstructorController extends BaseRequiredAuthenController 
                 daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
                 Date from = Date.valueOf(startDay);
                 Date to = Date.valueOf(startDay.plusDays(6));
-                sessionList = sessDB.getTimeTableOfInstructor(3, from, to);
+                sessionList = sessDB.getTimeTableOfInstructor(account.getInstructor().getId(), from, to);
             } else {
                 startDay = DateTimeHelper.getStartDayWeek(LocalDate.now());
                 daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
                 Date from = Date.valueOf(startDay);
                 Date to = Date.valueOf(startDay.plusDays(6));
-                sessionList = sessDB.getTimeTableOfInstructor(3, from, to);
+                sessionList = sessDB.getTimeTableOfInstructor(account.getInstructor().getId(), from, to);
             }
         }
 
@@ -83,7 +85,7 @@ public class TimeTableInstructorController extends BaseRequiredAuthenController 
             daysOfWeek = DateTimeHelper.getAllDayOfWeek(startDay);
             Date from = Date.valueOf(startDay);
             Date to = Date.valueOf(startDay.plusDays(6));
-            sessionList = sessDB.getTimeTableOfInstructor(3, from, to);
+            sessionList = sessDB.getTimeTableOfInstructor(account.getInstructor().getId(), from, to);
         }
 
         SlotDBContext slotDB = new SlotDBContext();
@@ -107,10 +109,10 @@ public class TimeTableInstructorController extends BaseRequiredAuthenController 
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**
@@ -121,10 +123,10 @@ public class TimeTableInstructorController extends BaseRequiredAuthenController 
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**

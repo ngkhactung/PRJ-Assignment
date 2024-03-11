@@ -4,8 +4,11 @@
  */
 package controller.instructor;
 
+import controller.authorization.BaseRoleBACController;
 import dal.GroupDBContext;
 import dal.StudentDBContext;
+import entity.Account;
+import entity.Feature;
 import entity.Group;
 import entity.Student;
 import java.io.IOException;
@@ -20,7 +23,7 @@ import java.sql.Date;
  *
  * @author Admin
  */
-public class SearchStudentController extends HttpServlet {
+public class SearchStudentController extends BaseRoleBACController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,7 +34,7 @@ public class SearchStudentController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
         String raw_studentID = request.getParameter("studentID");
         String studentID = (raw_studentID == null) ? "" : raw_studentID;
@@ -79,9 +82,10 @@ public class SearchStudentController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**
@@ -93,9 +97,10 @@ public class SearchStudentController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, account);
     }
 
     /**

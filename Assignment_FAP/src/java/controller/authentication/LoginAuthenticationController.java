@@ -75,7 +75,12 @@ public class LoginAuthenticationController extends HttpServlet {
                 response.addCookie(cookieRem);
             }
 
-            response.sendRedirect("instructor/timetable");
+            //Check if the account belongs to the student or not 
+            if (account.getStudent() != null) {
+                response.sendRedirect("student/timetable");
+            } else {
+                response.sendRedirect("instructor/timetable");
+            }
         } else {
             request.setAttribute("message", "Login Failed: Wrong username or password");
             request.getRequestDispatcher("view/authentication/login.jsp").forward(request, response);

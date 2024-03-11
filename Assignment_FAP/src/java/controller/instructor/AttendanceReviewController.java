@@ -5,9 +5,12 @@
 
 package controller.instructor;
 
+import controller.authorization.BaseRoleBACController;
 import dal.AttendanceDBContext;
 import dal.SessionDBContext;
+import entity.Account;
 import entity.Attendance;
+import entity.Feature;
 import entity.Session;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,7 +24,7 @@ import java.util.ArrayList;
  *
  * @author Admin
  */
-public class AttendanceReviewController extends HttpServlet {
+public class AttendanceReviewController extends BaseRoleBACController {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -54,7 +57,8 @@ public class AttendanceReviewController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
     throws ServletException, IOException {
         processRequest(request, response);
     } 
@@ -67,7 +71,8 @@ public class AttendanceReviewController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response,
+            Account account, ArrayList<Feature> featureList)
     throws ServletException, IOException {
         processRequest(request, response);
     }
