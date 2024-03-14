@@ -1,0 +1,30 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 13, 2024, 1:40:40 PM
+    Author     : Admin
+*/
+#footer {
+    background-color: black;
+}
+
+#footer .title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: whitesmoke;
+    margin-bottom: 1rem;
+}
+
+#footer .contact p,
+#footer .contact a,
+#footer .service a {
+    text-decoration: none;
+    color: #8a8484;
+}
+
+#footer .contact a:hover,
+#footer .service a:hover {
+    opacity: 0.5;
+}

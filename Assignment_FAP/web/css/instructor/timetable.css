@@ -1,0 +1,37 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 14, 2024, 10:49:28 PM
+    Author     : Admin
+*/
+
+#timetable .time-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+#timetable .headtime {
+    width: 14rem;
+}
+
+#timetable .headtable th {
+    color: white;
+    background-color: #282828;
+}
+
+#timetable .option-item {
+    color: white;
+    font-weight: 600;
+    font-size: 0.84rem;
+    padding: 0 5px;
+
+}
+
+#timetable .option-item.time {
+    display: inline-block;
+    background-color: #08b85d;
+    border-radius: 5px;
+}
