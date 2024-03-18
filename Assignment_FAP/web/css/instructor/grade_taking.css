@@ -1,0 +1,35 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 18, 2024, 4:54:21 PM
+    Author     : Admin
+*/
+#grade_taksing .wrap-border {
+    border-radius: 0.5rem;
+    border: 2px solid #dee2e6;
+}
+
+#grade_taksing .table-grade {
+    border: 3px solid black;
+}
+
+#grade_taksing .table-grade td,
+#grade_taksing .table-grade th {
+    border: 2px solid black;
+}
+
+#grade_taksing .table-grade input {
+    border: none;
+    width: 100%;
+}
+
+#grade_taksing .table-grade input:focus {
+    outline: none;
+}
+
+#grade_taksing #message b,
+#grade_taksing #message i {
+    color: #86c91f;
+}

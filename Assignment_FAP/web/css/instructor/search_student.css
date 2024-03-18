@@ -1,0 +1,37 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 18, 2024, 7:15:03 PM
+    Author     : Admin
+*/
+#search_student caption {
+    font-size: 1.6rem;
+}
+
+#search_student .wrap-search td {
+    padding: 0.75rem 0;
+}
+
+#search_student .button-search {
+    border: 1.7px solid black;
+    font-size: 1.2rem;
+}
+
+#search_student .wrap-result {
+    max-height: 90vh;
+    overflow-y: scroll;
+    position: relative;
+}
+
+#search_student .wrap-result thead {
+    position: sticky;
+    top: -2px;
+}
+
+#search_student .message{
+    color: red;
+    font-size: 1.25rem;
+}
+

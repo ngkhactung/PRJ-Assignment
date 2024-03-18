@@ -1,0 +1,25 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 18, 2024, 11:34:15 PM
+    Author     : Admin
+*/
+
+#attendance_review .wrap-info {
+    border-radius: 5px;
+    box-shadow: 0 0px 5px 2px rgba(0, 0, 0, 0.2)
+}
+
+#attendance_review .wrap-list th {
+    font-size: 1.1rem;
+}
+
+#attendance_review .wrap-list input {
+    border: 1px solid #ccced0;
+}
+
+#attendance_review .wrap-list tr:hover td {
+    background-color: #f2f2f2;
+}
