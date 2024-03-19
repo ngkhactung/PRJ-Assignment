@@ -7,10 +7,13 @@ package controller.instructor;
 import controller.authorization.BaseRoleBACController;
 import dal.AttendanceDBContext;
 import dal.SessionDBContext;
+import dal.StudentDBContext;
 import entity.Account;
 import entity.Attendance;
 import entity.Feature;
 import entity.Session;
+import entity.Student;
+import help.email.SendEmail;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -72,6 +75,14 @@ public class AttendanceTakingController extends BaseRoleBACController {
             String note = request.getParameter("note" + attendance.getStudent().getId());
             attendance.setNote(note);
             attendance.setRecordTime(Timestamp.valueOf(LocalDateTime.now()));
+        }
+        
+        for (Attendance attendance : attList) {
+            if(attendance.getStatus() == false){
+                StudentDBContext stuDB = new StudentDBContext();
+                Student student = stuDB.getStudent(attendance.getStudent().getId());
+                SendEmail.sendEmailToStudent(student.getName());
+            }
         }
         attDB.setAttendancesIntoTable(sessionID, attList);
         response.sendRedirect("attendance_review?sessId=" + sessionID);
