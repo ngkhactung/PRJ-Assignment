@@ -50,10 +50,18 @@ public class AttendanceViewController extends BaseRoleBACController {
         AttendanceDBContext attDB = new AttendanceDBContext();
         ArrayList<Attendance> attList = attDB.getAttedanceByCourse(account.getStudent().getId(), courseID);
 
+        int totalAbsent = 0;
+        for (Attendance attendance : attList) {
+            if(attendance.getStatus() !=null && attendance.getStatus() == false){
+                totalAbsent++;
+            }
+        }
+        
         request.setAttribute("courseID", courseID);
         request.setAttribute("groupList", groupList);
         request.setAttribute("sessList", sessionList);
         request.setAttribute("attList", attList);
+        request.setAttribute("totalAbsent", totalAbsent);
         request.getRequestDispatcher("../view/student/attendance_view.jsp").forward(request, response);
     }
 

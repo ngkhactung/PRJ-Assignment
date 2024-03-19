@@ -1,0 +1,29 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 19, 2024, 2:55:29 AM
+    Author     : Admin
+*/
+
+#academic_transcript table thead {
+    font-size: 1.06rem;
+}
+
+#academic_transcript table td {
+    padding: 1rem 0.5rem;
+}
+
+#academic_transcript table tr:hover td {
+    background-color: rgb(231, 231, 231);
+}
+
+#academic_transcript table .status {
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+}

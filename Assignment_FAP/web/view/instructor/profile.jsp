@@ -26,8 +26,13 @@
     </head>
     <body>
         <jsp:include page="../components/header.jsp" />
-        <jsp:include page="../components/instructor_menu.jsp"/>
 
+        <c:if test="${requestScope.isStudent != null}">
+            <jsp:include page="../components/student_menu.jsp"/>
+        </c:if>
+        <c:if test="${requestScope.isStudent == null}">
+            <jsp:include page="../components/instructor_menu.jsp"/>
+        </c:if>
         <br>
         <br>
         <br>
@@ -45,7 +50,7 @@
                 </div>
 
                 <div class="col-md-8 col-12 mt-md-0 mt-4">
-                    <div class="wrap-table-card px-4 py-2">
+                    <div class="wrap-table-card px-4 py-4">
                         <table class="table table-hover align-middle caption-top">
                             <caption class="ms-2">Detail Information</caption>
                             <tr>

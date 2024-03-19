@@ -40,7 +40,8 @@ public class InstructorProfileController extends BaseRoleBACController {
         if (raw_instructorID != null) {
             InstructorDBContext instrucDB = new InstructorDBContext();
             Instructor instructor = instrucDB.getInstructor(Integer.parseInt(raw_instructorID));
-
+            
+            request.setAttribute("isStudent", "isStudent");
             request.setAttribute("instructor", instructor);
             request.getRequestDispatcher("../view/instructor/profile.jsp").forward(request, response);
         } //If the instructor ID is null, it is because the instructor accessed the url

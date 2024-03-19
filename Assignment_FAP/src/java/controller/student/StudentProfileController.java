@@ -45,7 +45,8 @@ public class StudentProfileController extends BaseRoleBACController {
 
             ResultDBContext resultDB = new ResultDBContext();
             ArrayList<Result> resultList = resultDB.getAllResultsOfStudent(studentID);
-
+            
+            request.setAttribute("isInstructor", "isInstructor");
             request.setAttribute("student", student);
             request.setAttribute("resultList", resultList);
             request.getRequestDispatcher("../view/student/profile.jsp").forward(request, response);

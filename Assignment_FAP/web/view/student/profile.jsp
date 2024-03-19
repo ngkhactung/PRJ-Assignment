@@ -24,9 +24,10 @@
         <link rel="stylesheet" href="/assign.fap.fpt/css/components/header.css"/>
         <link rel="stylesheet" href="/assign.fap.fpt/css/components/menu.css"/>
         <link rel="stylesheet" href="/assign.fap.fpt/css/student/profile.css"/>
+        <link rel="stylesheet" href="/assign.fap.fpt/css/student/academic_transcript.css"/>
         <script>
             function displayTranscript() {
-                var tableTranscript = document.getElementById("transcriptTable");
+                var tableTranscript = document.getElementById("academic_transcript");
                 var buttonTranscript = document.getElementById("transcriptButton");
                 tableTranscript.style.display = "table";
                 buttonTranscript.value = "Hidden Transcript";
@@ -34,7 +35,7 @@
             }
 
             function hiddenTranscript() {
-                var tableTranscript = document.getElementById("transcriptTable");
+                var tableTranscript = document.getElementById("academic_transcript");
                 var buttonTranscript = document.getElementById("transcriptButton");
                 tableTranscript.style.display = "none";
                 buttonTranscript.value = "Academic Transcript";
@@ -44,8 +45,13 @@
     </head>
     <body>
         <jsp:include page="../components/header.jsp" />
-        <jsp:include page="../components/student_menu.jsp"/>
 
+        <c:if test="${requestScope.isInstructor != null}">
+            <jsp:include page="../components/instructor_menu.jsp"/>
+        </c:if>
+        <c:if test="${requestScope.isInstructor == null}">
+            <jsp:include page="../components/student_menu.jsp"/>
+        </c:if>
         <br>
         <br>
         <br>
@@ -105,50 +111,65 @@
                     </div>
                 </div>
             </div>
+                            
+            <c:if test="${requestScope.isInstructor != null}">
+                <div class="row mt-5">
+                    <div class="col-12 text-center">
+                        <div class="d-grid col-md-2 m-md-auto">
+                            <input id="transcriptButton" type="button" class="btn btn-dark btn-lg py-3"
+                                   onclick="displayTranscript()" value="Academic Transcript">
+                        </div>
+                    </div>
+                </div>
+            </c:if>
         </div>
 
 
         <c:if test="${requestScope.resultList != null}">
-            <input id="transcriptButton" type="button" value="Academic Transcript" onclick="displayTranscript()"/>
-
-            <table id="transcriptTable" style="display: none" border="1px">
-                <tr>
-                    <th>NO</th>
-                    <th>COURSE CODE</th>
-                    <th>PREREQUISITE</th>
-                    <th>REPLACED COURSE</th>
-                    <th>COURSE NAME</th>
-                    <th>CREDIT</th>
-                    <th>GRADE</th>
-                    <th>STATUS</th>
-                </tr>
-
-                <c:forEach items="${requestScope.resultList}" var="result" varStatus="loop">
-                    <tr>
-                        <td>${loop.count}</td>
-                        <td>${result.course.code}</td>
-                        <td>${result.course.preRequisite}</td>
-                        <td>${result.course.replacedCourse}</td>
-                        <td>${result.course.name}</td>
-                        <td>${result.course.credit}</td>
-                        <td>
-                            <fmt:formatNumber pattern="##.#" 
-                                              value="${result.average}"/>
-                        </td>
-                        <td>
-                            <c:if test="${result.status == 'PASSED'}">
-                                <b style="color: green">Passed</b>
-                            </c:if>
-                            <c:if test="${result.status == 'NOT PASSED'}">
-                                <b style="color: red">Not passed</b>
-                            </c:if>
-                            <c:if test="${result.status == 'STUDYING'}">
-                                <b style="color: aquamarine">Studying</b>
-                            </c:if>
-                        </td>
-                    <tr>
-                    </c:forEach>
-            </table>
+            <div id="academic_transcript" class="container px-3 mt-5" style="display: none">
+                <div class="row">
+                    <div class="col-12 table-responsive-md">
+                        <table class="table">
+                            <thead class="table-light">
+                            <th>NO</th>
+                            <th>COURSE CODE</th>
+                            <th>PREREQUISITE</th>
+                            <th>REPLACED COURSE</th>
+                            <th>COURSE NAME</th>
+                            <th>CREDIT</th>
+                            <th>GRADE</th>
+                            <th>STATUS</th>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${requestScope.resultList}" var="result" varStatus="loop">
+                                    <tr>
+                                        <td>${loop.count}</td>
+                                        <td>${result.course.code}</td>
+                                        <td>${result.course.preRequisite}</td>
+                                        <td>${result.course.replacedCourse}</td>
+                                        <td>${result.course.name}</td>
+                                        <td>${result.course.credit}</td>
+                                        <td>
+                                            <fmt:formatNumber pattern="##.#" value="${result.average}" />
+                                        </td>
+                                        <td>
+                                            <c:if test="${result.status == 'PASSED'}">
+                                                <span class="status" style="background-color: #5cb85c">Passed</span>
+                                            </c:if>
+                                            <c:if test="${result.status == 'NOT PASSED'}">
+                                                <span class="status" style="background-color: red">Not passed</span>
+                                            </c:if>
+                                            <c:if test="${result.status == 'STUDYING'}">
+                                                <span class="status" style="background-color: #5bc0de">Studying</span>
+                                            </c:if>
+                                        </td>
+                                    <tr>
+                                    </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </c:if>
 
         <br>

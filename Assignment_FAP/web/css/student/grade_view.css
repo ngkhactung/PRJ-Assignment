@@ -1,0 +1,41 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 19, 2024, 9:10:45 PM
+    Author     : Admin
+*/
+
+#grade_view .wrap-info {
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.2);
+}
+
+#grade_view .wrap-info thead th {
+    border-radius: 5px;
+    color: white;
+    background-color: gray;
+}
+
+#grade_view .wrap-info tr:hover td {
+    font-size: 1.06rem;
+    box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.2);
+}
+
+#grade_view .wrap-result {
+    border-radius: 5px;
+    border: 2px solid rgb(134, 134, 134);
+}
+
+#grade_view .wrap-result thead th {
+    padding: 0.55rem 0.5rem;
+    color: white;
+    background-color: gray;
+    font-size: 1.02rem;
+}
+
+#grade_view .wrap-result tfoot td {
+    font-size: 1.03rem;
+    font-weight: 700;
+}

@@ -1,0 +1,53 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 19, 2024, 7:53:15 PM
+    Author     : Admin
+*/
+
+#attendance_view .wrap-info {
+    border-radius: 5px;
+    box-shadow: 0 0px 5px 2px rgba(0, 0, 0, 0.2)
+}
+
+#attendance_view .wrap-info tr:hover td {
+    font-size: 1.06rem;
+    box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.2);
+}
+
+#attendance_view .wrap-result {
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.2);
+}
+
+#attendance_view .wrap-result tr:hover td {
+    background-color: rgb(231, 231, 231);
+}
+
+#attendance_view .wrap-result .date {
+    color: white;
+    background-color: #337ab7;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.3rem 0.4rem;
+    border-radius: 5px
+}
+
+#attendance_view .wrap-result .time {
+    color: white;
+    background-color: #d9534f;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.25rem 0.4rem;
+    border-radius: 5px
+}
+
+#attendance_view .wrap-result tfoot td{
+    padding: 0.7rem 0.5rem;
+}
+
+#attendance_view .wrap-result .total-absent {
+    font-size: 1.1rem;
+}

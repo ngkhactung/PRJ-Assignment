@@ -19,16 +19,20 @@
                     <div class="collapse navbar-collapse justify-content-md-center" id="menubar">
                         <ul class="navbar-nav nav-pills text-md-center mt-md-0 mt-2">
                             <li class="nav-item mx-md-3">
-                                <a href="timetable" class="nav-link px-md-2
+                                <a href="../student/timetable" class="nav-link px-md-2
                                    ${currentPage == '/view/student/timetable.jsp' ? ' active':''} ">Time Table</a>
                             </li>
                             <li class="nav-item mx-md-3">
-                                <a href="attendance_view" class="nav-link px-md-2
+                                <a href="../student/attendance_view" class="nav-link px-md-2
                                    ${currentPage == '/view/student/attendance_view.jsp' ? ' active':''} ">View Attendance</a>
                             </li>
                             <li class="nav-item mx-md-3">
-                                <a href="grade_view" class="nav-link px-md-2
+                                <a href="../student/grade_view" class="nav-link px-md-2
                                    ${currentPage == '/view/student/grade_view.jsp' ? ' active':''} ">View Grade</a>
+                            </li>
+                            <li class="nav-item mx-md-3">
+                                <a href="../student/academic_transcript" class="nav-link px-md-2
+                                   ${currentPage == '/view/student/academic_transcript.jsp' ? ' active':''} ">Academic Transcript</a>
                             </li>
                         </ul>
                     </div>

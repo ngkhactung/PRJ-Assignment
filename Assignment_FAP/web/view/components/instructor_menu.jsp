@@ -19,15 +19,15 @@
                     <div class="collapse navbar-collapse justify-content-md-center" id="menubar">
                         <ul class="navbar-nav nav-pills text-md-center mt-md-0 mt-2">
                             <li class="nav-item mx-md-3">
-                                <a href="timetable" class="nav-link px-md-2
+                                <a href="../instructor/timetable" class="nav-link px-md-2
                                    ${currentPage == '/view/instructor/timetable.jsp' ? ' active':''} ">Time Table</a>
                             </li>
                             <li class="nav-item mx-md-3">
-                                <a href="grade_taking" class="nav-link px-md-2
+                                <a href="../instructor/grade_taking" class="nav-link px-md-2
                                    ${currentPage == '/view/instructor/grade_taking.jsp' ? ' active':''} ">Take Grade</a>
                             </li>
                             <li class="nav-item mx-md-3">
-                                <a href="search_student" class="nav-link px-md-2
+                                <a href="../instructor/search_student" class="nav-link px-md-2
                                    ${currentPage == '/view/instructor/search_student.jsp' ? ' active':''} ">Search Student</a>
                             </li>
                         </ul>
